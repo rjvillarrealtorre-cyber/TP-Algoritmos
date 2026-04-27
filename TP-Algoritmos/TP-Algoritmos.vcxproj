@@ -125,6 +125,10 @@
   <ItemGroup>
     <ClCompile Include="TP-Algoritmos.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Personaje.h" />
+    <ClInclude Include="Protagonista.h" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
