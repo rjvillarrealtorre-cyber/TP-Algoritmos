@@ -21,14 +21,19 @@ public:
 		velocidad = vlc;
 	}
 
-	std::vector<std::vector<string>> direccionSprite() {
+	std::vector<std::vector<string>>& direccionSprite() {
 		if (dir == 'R') return spriteR;
 		else return spriteL;
 	}
 
 	void borrar() {
+		int anchoMax = 0;
+		for (auto& fila : direccionSprite()) {
+			if (fila.size() > anchoMax) anchoMax = fila.size();
+		}
+
 		for (int i = 0; i < direccionSprite().size(); i++) {
-			for (int j = 0; j < direccionSprite()[i].size(); j++) {
+			for (int j = 0; j < anchoMax; j++) {
 				SetConsoleCursorPosition(hConsole, { static_cast<short>(x + j), static_cast<short>(y + i) });
 				std::cout << " ";
 			}
@@ -42,14 +47,5 @@ public:
 				std::cout << direccionSprite()[i][j];
 			}
 		}
-	}
-
-	void mover() {
-		borrar();
-
-		if (dir == 'R') x++;
-		else x--;
-
-		avanzar();
 	}
 };
