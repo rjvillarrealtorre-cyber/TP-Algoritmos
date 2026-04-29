@@ -1,6 +1,16 @@
 #pragma once
 #include "Personaje.h"
 
+/*
+	CLASE PROTAGONISTA:
+	El protagonista es controlado por el jugador.
+	Es una clase hija de "Personaje".
+	El cambio significativo está en la inclusión de
+	CONFIANZA, EVIDENCIA, CONOCIMIENTO DE LENGUA y
+	la capacidad de moverse con las flechas e
+	interactuar con los NPCs (personajes no jugables).
+*/
+
 class Protagonista : public Personaje {
 private:
 	int confianza;
@@ -14,29 +24,30 @@ public:
 		conocimientoLengua = cl;
 	}
 
+	// Permite el movimiento con las flechas direccionales
 	void determinarMovimiento() {
 		if (GetAsyncKeyState(VK_RIGHT) & 0x8000) {
 			dir = 'R';
 			borrar();
 			x++;
-			avanzar();
+			mostrar();
 		}
 		else if (GetAsyncKeyState(VK_LEFT) & 0x8000) {
 			dir = 'L';
 			borrar();
 			x--;
-			avanzar();
+			mostrar();
 		}
 
 		if (GetAsyncKeyState(VK_UP) & 0x8000) {
 			borrar();
 			y--;
-			avanzar();
+			mostrar();
 		}
 		else if (GetAsyncKeyState(VK_DOWN) & 0x8000) {
 			borrar();
 			y++;
-			avanzar();
+			mostrar();
 		}
 	}
 
@@ -45,4 +56,13 @@ public:
 	int getConfianza() { return confianza; }
 	int getEvidencia() { return evidencia;}
 	int getConocimientoLengua() { return conocimientoLengua;}
+
+	float getX() { return x; }
+	float getY() { return y; }
+
+	// Setters
+
+	void setConfianza(int p) { confianza = p; }
+	void setEvidencia(int p) { evidencia = p; }
+	void setConocimientoLengua(int p) { conocimientoLengua = p; }
 };

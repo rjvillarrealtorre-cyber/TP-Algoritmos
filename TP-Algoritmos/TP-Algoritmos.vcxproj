@@ -126,6 +126,9 @@
     <ClCompile Include="TP-Algoritmos.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ArbolDialogo.h" />
+    <ClInclude Include="Interfaz.h" />
+    <ClInclude Include="AliadoEstatico.h" />
     <ClInclude Include="Personaje.h" />
     <ClInclude Include="Protagonista.h" />
   </ItemGroup>

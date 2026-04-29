@@ -1,5 +1,13 @@
 #pragma once
 
+// CLASE PERSONAJE: Clase padre de todas las entidades de tipo "personaje"
+// como el jugador, los aliados y los enemigos.
+// Jugador: Es el protagonista. Es controlado por el usuario.
+// Aliados: Puede ser un NPC (se puede interactuar con él, pero no se mueve
+// en el mapa) o un aliado propiamente dicho (se mueve en el mapa y tiene
+// atributos similares al jugador, como vida o velocidad)
+// Enemigos: Atacan al jugador o a sus aliados
+
 class Personaje {
 protected:
 	string nombre;
@@ -21,6 +29,13 @@ public:
 		velocidad = vlc;
 	}
 
+	Personaje(string n, std::vector<std::vector<string>> sr, float px, float py) {
+		nombre = n;
+		spriteR = spriteL = sr;
+		x = px;
+		y = py;
+	}
+
 	std::vector<std::vector<string>>& direccionSprite() {
 		if (dir == 'R') return spriteR;
 		else return spriteL;
@@ -40,7 +55,7 @@ public:
 		}
 	}
 
-	void avanzar() {
+	void mostrar() {
 		for (int i = 0; i < direccionSprite().size(); i++) {
 			for (int j = 0; j < direccionSprite()[i].size(); j++) {
 				SetConsoleCursorPosition(hConsole, { static_cast<short>(x + j), static_cast<short>(y + i) });
@@ -48,4 +63,7 @@ public:
 			}
 		}
 	}
+
+	string getNombre() { return nombre; }
+	int getVida() { return vida; }
 };
