@@ -17,6 +17,7 @@ protected:
 	int vida;
 	float x, y;
 	int velocidad;
+	int alto, ancho;
 public:
 	Personaje(string n, std::vector<std::vector<string>> sr, std::vector<std::vector<string>> sl,  char d, int v, float px, float py, int vlc) {
 		nombre = n;
@@ -27,6 +28,13 @@ public:
 		x = px;
 		y = py;
 		velocidad = vlc;
+
+		alto = spriteR.size();
+		int temp = 0;
+		for (int i = 0; i < alto; i++) {
+			if (spriteR[i].size() > temp) temp = spriteR[i].size();
+		}
+		ancho = temp;
 	}
 
 	Personaje(string n, std::vector<std::vector<string>> sr, float px, float py) {
@@ -34,6 +42,13 @@ public:
 		spriteR = spriteL = sr;
 		x = px;
 		y = py;
+
+		alto = spriteR.size();
+		int temp = 0;
+		for (int i = 0; i < alto; i++) {
+			if (spriteR[i].size() > temp) temp = spriteR[i].size();
+		}
+		ancho = temp;
 	}
 
 	std::vector<std::vector<string>>& direccionSprite() {

@@ -27,27 +27,36 @@ public:
 	// Permite el movimiento con las flechas direccionales
 	void determinarMovimiento() {
 		if (GetAsyncKeyState(VK_RIGHT) & 0x8000) {
-			dir = 'R';
-			borrar();
-			x++;
-			mostrar();
+			//Restricciones
+			if (!(x + ancho >= ANCHO_JUGABLE - 1)) {
+				dir = 'R';
+				borrar();
+				x++;
+				mostrar();
+			}
 		}
 		else if (GetAsyncKeyState(VK_LEFT) & 0x8000) {
-			dir = 'L';
-			borrar();
-			x--;
-			mostrar();
+			if (!(x <= 1)) {
+				dir = 'L';
+				borrar();
+				x--;
+				mostrar();
+			}
 		}
 
 		if (GetAsyncKeyState(VK_UP) & 0x8000) {
-			borrar();
-			y--;
-			mostrar();
+			if (!(y <= 1)) {
+				borrar();
+				y--;
+				mostrar();
+			}
 		}
 		else if (GetAsyncKeyState(VK_DOWN) & 0x8000) {
-			borrar();
-			y++;
-			mostrar();
+			if (!(y + alto >= ALTO_JUGABLE - 1)) {
+				borrar();
+				y++;
+				mostrar();
+			}
 		}
 	}
 

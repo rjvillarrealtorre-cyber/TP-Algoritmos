@@ -12,6 +12,8 @@ const int ANCHO_ESTAD = 30;
 const int ALTO_JUGABLE = 21;
 const int ALTO_DIAL = 8;
 
+const int TIEMPO_SLEEP = 75;
+
 #include "Personaje.h"
 #include "ArbolDialogo.h"
 #include "Protagonista.h"
@@ -30,6 +32,9 @@ int main()
 
     //Dibujar los bordes
     dibujarBordes();
+
+    //Tiempo transcurrido
+    int contadorFrames = 0;
 
     // ------------------- Setup personajes -------------------
 
@@ -120,8 +125,11 @@ int main()
 
         prot.determinarMovimiento();
 
-        mostrarEstadisticas(prot);
+        mostrarEstadisticas(prot, contadorFrames);
 
-        Sleep(75);
+        // Miscelánea
+        contadorFrames++;
+
+        Sleep(TIEMPO_SLEEP);
     }
 }

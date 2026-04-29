@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include <string>
 
 void dibujarBordes() {
     for (int i = 1; i <= ALTO_JUGABLE + ALTO_DIAL; i++) {
@@ -11,7 +12,7 @@ void dibujarBordes() {
     }
 }
 
-void mostrarEstadisticas(Protagonista& prot) {
+void mostrarEstadisticas(Protagonista& prot, int contadorFrames) {
     SetConsoleCursorPosition(hConsole, { short(ANCHO_JUGABLE + 2), 2 });
     std::cout << "[NOMBRE]:" << prot.getNombre();
 
@@ -30,6 +31,12 @@ void mostrarEstadisticas(Protagonista& prot) {
     SetConsoleCursorPosition(hConsole, { short(ANCHO_JUGABLE + 2), 12 });
     std::cout << "[NIVEL]: 1" << "    ";
 
+    // Cálculo del tiempo
+    int segundos = ((contadorFrames * TIEMPO_SLEEP) / 1000) % 60;
+    int minutos = ((contadorFrames * TIEMPO_SLEEP) / 1000) / 60;
+
+    string mostrarSegundos = (segundos < 10) ? ("0" + std::to_string(segundos)) : std::to_string(segundos);
+
     SetConsoleCursorPosition(hConsole, { short(ANCHO_JUGABLE + 2), 14 });
-    std::cout << "[TIEMPO]: 1:32" << "    ";
+    std::cout << "[TIEMPO]: " << minutos << ":" << mostrarSegundos << "    ";
 }
