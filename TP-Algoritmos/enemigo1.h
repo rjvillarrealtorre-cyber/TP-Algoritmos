@@ -5,7 +5,7 @@ class EnemigoTalador : public Personaje {
 public:
     EnemigoTalador(float px, float py) : Personaje("Talador", {}, {}, 'R', 100, px, py, 1) {  
         vector<string> f0 = { " ", " ", "_", " ", "|", ">" }; 
-        vector<string> f1 = { "<", "|", "-", "|", " ", " ", "T", "a", "l", "a", "d", "o", "r" }; 
+        vector<string> f1 = { "<", "|", "-", "|", " ", " "}; 
         vector<string> f2 = { " ", "|", "\\", " ", " ", " " };
 
         spriteR.push_back(f0);
