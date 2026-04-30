@@ -1,0 +1,71 @@
+
+// QUITANDO EL EJEMPLO DE AliadoEstatico. h tenemos eso
+
+#include <iostream>
+#include <Windows.h>
+#include <vector>
+#include <clocale>
+#include <conio.h>
+#include "Aliado.h"
+#include "Npc.h"
+#pragma comment(lib, "User32.lib")
+using std::string;
+using namespace std;
+HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+
+
+int main()
+{
+
+std::setlocale(LC_ALL, ".UTF8");
+
+SetConsoleOutputCP(CP_UTF8);
+SetConsoleCP(CP_UTF8);
+
+std::vector<std::vector<string>> sr = {
+	{"_", "∧", "_"},
+	{" ", "O"},
+	{"<", "|", "\\"},
+	{" ", "|", "\\"}
+};
+
+std::vector<std::vector<string>> sl = {
+	{"_", "∧", "_"},
+	{" ", "O"},
+	{"/", "|", ">"},
+	{"/", "|"}
+};
+
+vector<vector<string>> aliadoR = {
+{" ", "O", " "},
+{"-", "|", "-"},
+{" ", "^", " "}
+};
+
+vector<vector<string>> aliadoL = {
+	{" ", "O", " "},
+	{"-", "|", "-"},
+	{" ", "^", " "}
+};
+
+Protagonista prot("Mateo", sr, sl, 'R', 100, 1, 1, 1, 0, 0, 0);
+Aliado aliado1("Wilmer", aliadoR, aliadoL, 'R', 100, 30, 10, 1, 1, "Soy parte de la comunidad"); //ALIADO
+
+prot.avanzar();
+aliado1.avanzar();
+
+while (true) {
+	prot.determinarMovimiento();
+	aliado1.avanzar();
+
+	if (GetAsyncKeyState('E') & 0x8000) {
+		aliado1.hablar();
+		aliado1.ayudar();
+		aliado1.desbloquear();
+	}
+
+	Sleep(75);
+}
+
+
+}
