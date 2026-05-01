@@ -56,7 +56,7 @@ public:
 		else return spriteL;
 	}
 
-	void borrar() {
+	void borrar(const std::vector<std::vector<int>>& matrizMapa) {
 		int anchoMax = 0;
 		for (auto& fila : direccionSprite()) {
 			if (fila.size() > anchoMax) anchoMax = fila.size();
@@ -65,16 +65,20 @@ public:
 		for (int i = 0; i < direccionSprite().size(); i++) {
 			for (int j = 0; j < anchoMax; j++) {
 				SetConsoleCursorPosition(hConsole, { static_cast<short>(x + j), static_cast<short>(y + i) });
+				SetConsoleTextAttribute(hConsole, leerColor(matrizMapa.at(y + i - 1).at(x + j - 1)));
 				std::cout << " ";
+				SetConsoleTextAttribute(hConsole, 0x7);
 			}
 		}
 	}
 
-	void mostrar() {
+	void mostrar(const std::vector<std::vector<int>>& matrizMapa) {
 		for (int i = 0; i < direccionSprite().size(); i++) {
 			for (int j = 0; j < direccionSprite()[i].size(); j++) {
 				SetConsoleCursorPosition(hConsole, { static_cast<short>(x + j), static_cast<short>(y + i) });
+				SetConsoleTextAttribute(hConsole, leerColor(matrizMapa.at(y + i - 1).at(x + j - 1)));
 				std::cout << direccionSprite()[i][j];
+				SetConsoleTextAttribute(hConsole, 0x7);
 			}
 		}
 	}
