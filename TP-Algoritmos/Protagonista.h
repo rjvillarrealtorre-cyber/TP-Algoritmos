@@ -74,4 +74,6 @@ public:
 	void setConfianza(int p) { confianza = p; }
 	void setEvidencia(int p) { evidencia = p; }
 	void setConocimientoLengua(int p) { conocimientoLengua = p; }
+
+	void setX(float p) { x = p; }
 };

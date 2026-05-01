@@ -2,6 +2,9 @@
 
 class Mapa {
 private:
+	string nombre;
+	int num;
+
 	std::vector<std::vector<int>> matrizMapa;
 	std::vector<AliadoEstatico> vecAliEst;
 	// std::vector<Enemigo> vecEnemigo;
@@ -11,6 +14,11 @@ public:
 	Mapa(std::vector<std::vector<int>> mm, std::vector<AliadoEstatico> vae) {
 		matrizMapa = mm;
 		vecAliEst = vae;
+
+		// Inicializando todas las entidades...
+		for (AliadoEstatico ali : vecAliEst) {
+			ali.mostrar(matrizMapa);
+		}
 	}
 
 	void dibujarMapa() {
@@ -28,4 +36,6 @@ public:
 	//Setters y getters
 
 	std::vector<std::vector<int>> getMatrizMapa() { return matrizMapa; }
+
+	std::vector<AliadoEstatico>& getVecAliEst() { return vecAliEst; }
 };

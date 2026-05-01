@@ -130,6 +130,7 @@
     <ClInclude Include="Interfaz.h" />
     <ClInclude Include="AliadoEstatico.h" />
     <ClInclude Include="Mapa.h" />
+    <ClInclude Include="Nivel.h" />
     <ClInclude Include="Personaje.h" />
     <ClInclude Include="Protagonista.h" />
     <ClInclude Include="Utilidades.h" />

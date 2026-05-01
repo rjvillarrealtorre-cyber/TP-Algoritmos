@@ -156,11 +156,7 @@ public:
 
 	// Función más importante. Se encarga del funcionamiento
 	// de cada interacción.
-	void manejarFlujoInteraccion(bool enInteraccion, int numInteraccion, Protagonista& prot) {
-		if (!enInteraccion) return; // Si NO se está en interacción: salir.
-		// Se está en interacción si el jugador está lo suficientemente cerca
-		// del personaje y presiona "E" para comenzar a hablar con él.
-
+	void manejarFlujoInteraccion(int numInteraccion, Protagonista& prot) {
 		Dialogo& d = arbol[numInteraccion][numDialogo];
 
 		mostrarInteraccion(numInteraccion);

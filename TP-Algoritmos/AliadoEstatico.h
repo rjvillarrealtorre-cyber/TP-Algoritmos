@@ -31,6 +31,6 @@ public:
 			arbol.borrarCajaDialogo();
 		}
 
-		arbol.manejarFlujoInteraccion(enInteraccion, 0, prot);
+		if(enInteraccion) arbol.manejarFlujoInteraccion(0, prot);
 	}
 };

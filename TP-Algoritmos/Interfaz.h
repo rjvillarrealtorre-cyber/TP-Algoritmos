@@ -1,17 +1,6 @@
 ﻿#pragma once
 #include <string>
 
-void dibujarBordes() {
-    for (int i = 1; i <= ALTO_JUGABLE + ALTO_DIAL; i++) {
-        for (int j = 1; j <= ANCHO_JUGABLE + ANCHO_ESTAD; j++) {
-            if (i == 1 || i == ALTO_JUGABLE || i == ALTO_JUGABLE + ALTO_DIAL || j == 1 || j == ANCHO_JUGABLE || j == ANCHO_JUGABLE + ANCHO_ESTAD)
-                std::cout << u8"■";
-            else std::cout << " ";
-        }
-        std::cout << "\n";
-    }
-}
-
 void mostrarEstadisticas(Protagonista& prot, int contadorFrames) {
     SetConsoleCursorPosition(hConsole, { short(ANCHO_JUGABLE + 2), 2 });
     std::cout << "[NOMBRE]:" << prot.getNombre();
