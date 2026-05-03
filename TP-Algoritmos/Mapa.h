@@ -7,17 +7,20 @@ private:
 
 	std::vector<std::vector<int>> matrizMapa;
 	std::vector<AliadoEstatico> vecAliEst;
-	// std::vector<Enemigo> vecEnemigo;
-	// std::vector<AliadoDinamico> vecAliDinam;
+	std::vector<Enemigo*> vecEnemigo; // Aplicaremos polimorfismo
+	std::vector<AliadoDinamico> vecAliDinam;
 
 public:
-	Mapa(std::vector<std::vector<int>> mm, std::vector<AliadoEstatico> vae) {
+	Mapa(std::vector<std::vector<int>> mm, std::vector<AliadoEstatico> vae = {}, std::vector<AliadoDinamico> vad = {}, std::vector<Enemigo*> ve = {}) {
 		matrizMapa = mm;
 		vecAliEst = vae;
+		vecAliDinam = vad;
+		vecEnemigo = ve;
+	}
 
-		// Inicializando todas las entidades...
-		for (AliadoEstatico ali : vecAliEst) {
-			ali.mostrar(matrizMapa);
+	~Mapa() {
+		for (Enemigo* enemigo : vecEnemigo) {
+			delete enemigo;
 		}
 	}
 
@@ -35,7 +38,11 @@ public:
 
 	//Setters y getters
 
-	std::vector<std::vector<int>> getMatrizMapa() { return matrizMapa; }
+	std::vector<std::vector<int>>& getMatrizMapa() { return matrizMapa; }
 
 	std::vector<AliadoEstatico>& getVecAliEst() { return vecAliEst; }
+
+	std::vector<AliadoDinamico>& getVecAliDinam() { return vecAliDinam; }
+
+	std::vector<Enemigo*>& getVecEnemigo() { return vecEnemigo; }
 };

@@ -28,7 +28,7 @@ public:
 	void determinarMovimiento(const std::vector<std::vector<int>>& matrizMapa) {
 		if (GetAsyncKeyState(VK_RIGHT) & 0x8000) {
 			//Restricciones
-			if (!(x + ancho >= ANCHO_JUGABLE - 1)) {
+			if (!(x + ancho >= ANCHO_JUGABLE - 1) && (matrizMapa[y + 2][x + 1] == 3 || matrizMapa[y + 2][x + 1] == 4 || matrizMapa[y + 2][x + 1] == 5)) {
 				dir = 'R';
 				borrar(matrizMapa);
 				x++;
@@ -36,7 +36,7 @@ public:
 			}
 		}
 		else if (GetAsyncKeyState(VK_LEFT) & 0x8000) {
-			if (!(x <= 1)) {
+			if (!(x <= 1) && (matrizMapa[y + 2][x - 1] == 3 || matrizMapa[y + 2][x - 1] == 4 || matrizMapa[y + 2][x - 1] == 5)) {
 				dir = 'L';
 				borrar(matrizMapa);
 				x--;
@@ -45,7 +45,7 @@ public:
 		}
 
 		if (GetAsyncKeyState(VK_UP) & 0x8000) {
-			if (!(y <= 1)) {
+			if (!(y <= 1) && (matrizMapa[y - 1 + 2][x] == 3 || matrizMapa[y - 1 + 2][x] == 4 || matrizMapa[y - 1 + 2][x] == 5)) {
 				borrar(matrizMapa);
 				y--;
 				mostrar(matrizMapa);

@@ -18,10 +18,15 @@ const int TIEMPO_SLEEP = 75;
 #include "Personaje.h"
 #include "ArbolDialogo.h"
 #include "Protagonista.h"
+#include "Npc.h"
+#include "AliadoDinamico.h"
 #include "AliadoEstatico.h"
+#include "Enemigo.h"
+#include "Cinematica.h"
 #include "Mapa.h"
 #include "Nivel.h"
 #include "Interfaz.h"
+#include "Juego.h"
 
 int main()
 {
@@ -33,8 +38,7 @@ int main()
     SetConsoleOutputCP(CP_UTF8);
     SetConsoleCP(CP_UTF8);
 
-    //Dibujar los bordes
-    dibujarBordes();
+    std::srand(std::time(NULL));
 
     //Tiempo transcurrido
     int contadorFrames = 0;
@@ -57,6 +61,12 @@ int main()
     };
 
     Protagonista prot("Mateo", sr, sl, 'R', 100, 10, 10, 1, 0, 0, 0);
+
+    // 
+
+    AliadoDinamico wlm("Wilmer", sr, sl, 'R', 100, 10, 10, 1);
+
+    
 
     ArbolDialogo arbol;
     arbol.agregarInteraccionVacia();
@@ -118,7 +128,7 @@ int main()
 
     arbol.agregarDialogo(d4, 0);
 
-    AliadoEstatico wilmer("Wilmer", sl, 15, 10, arbol);
+    AliadoEstatico wilmer("Wilmer", sl, 21, 15, arbol);
 
     std::vector<std::vector<int>> mapa = {
         {2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, -1, -1, 2, 2, 2, 2, 2, -1, -1, -1, -1, 2, -1, 2, 5, 2, -1, 2, -1, -1, 2, 2, 2, 2, 2, 2, 2, -1, 2, 2, 5, 2, 2, -1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 5, 0, -1, -1, -1, -1, -1, -1, 0, 0, 0, -1, -1, -1, -1},
@@ -168,23 +178,47 @@ int main()
         {3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3},
     };
 
-    Mapa map(mapa, {std::move(wilmer)});
+    Mapa* map = new Mapa(mapa, { std::move(wilmer) });
 
-    Mapa map2(mapa2, {});
+    std::vector<Enemigo*> enemigos;
+    enemigos.push_back(new EnemigoTalador(5, 5));
+    enemigos.push_back(new EnemigoSaboteador(10, 10));
 
-    Nivel nivel1({ map, map2 });
+    Mapa* map2 = new Mapa(mapa2, {}, {std::move(wlm)}, enemigos);
 
-    nivel1.dibujarMapa();
+    Cinematica cinemIn;
+    cinemIn.agregarSlide({ "Mateo: He aquí yo. Me encuentro en Puerto Esperanza, nombre castellano para",
+        "Kamitsa Pampa, 'La tierra del buen vivir'. Me llamo Mateo. Vengo en representación de Crónica",
+        "Viva, una revista de investigación basada en Lima, donde yo vivo..." });
+
+    Cinematica cinemFin;
+    cinemIn.agregarSlide({ "Talador: ¿Qué es lo que haces aquí, forastero? ¿Eres acaso uno",
+        "de los tantos periodistas que vienen de la capital? Mira... te doy un consejo.",
+        "Escribe tu nota como te plazca. Este lugar es... curioso. Pero ten mucho cuidado...",
+        "El sendero es grande. Es fácil perderse. Y nadie vendrá a ayudarte." });
+
+    Nivel nivel1({ map, map2 }, {cinemIn, cinemFin});
 
     // ------------------- Bucle Principal -------------------
 
     while (true) {
-        for (AliadoEstatico& ali : nivel1.getMapaActual().getVecAliEst()) {
-            ali.mostrar(nivel1.getMapaActual().getMatrizMapa());
+        nivel1.mostrarCinematica(); //si aplica...
+
+        for (AliadoEstatico& ali : nivel1.getMapaActual()->getVecAliEst()) {
+            ali.mostrar(nivel1.getMapaActual()->getMatrizMapa());
             ali.manejarInteraccion(prot);
         }
 
-        prot.determinarMovimiento(nivel1.getMapaActual().getMatrizMapa());
+        for (AliadoDinamico& ali : nivel1.getMapaActual()->getVecAliDinam()) {
+            ali.manejarEstados();
+            ali.manejarMovimiento(nivel1.getMapaActual()->getMatrizMapa(), prot);
+        }
+
+        for (Enemigo* en : nivel1.getMapaActual()->getVecEnemigo()) {
+            en->manejarMovimiento(nivel1.getMapaActual()->getMatrizMapa());
+        }
+
+        prot.determinarMovimiento(nivel1.getMapaActual()->getMatrizMapa());
 
         mostrarEstadisticas(prot, contadorFrames);
 
@@ -195,4 +229,6 @@ int main()
 
         Sleep(TIEMPO_SLEEP);
     }
+
+    delete map, map2;
 }
