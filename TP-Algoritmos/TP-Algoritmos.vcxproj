@@ -102,6 +102,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -123,6 +124,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="JuegoBuilder.h" />
     <ClCompile Include="TP-Algoritmos.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -134,7 +136,9 @@
     <ClInclude Include="AliadoEstatico.h" />
     <ClInclude Include="Juego.h" />
     <ClInclude Include="Mapa.h" />
+    <ClInclude Include="Menu.h" />
     <ClInclude Include="Nivel.h" />
+    <ClInclude Include="Nivel2.h" />
     <ClInclude Include="Npc.h" />
     <ClInclude Include="Personaje.h" />
     <ClInclude Include="Protagonista.h" />

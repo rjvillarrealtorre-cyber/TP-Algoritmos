@@ -7,12 +7,12 @@ using std::string;
 
 HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 
-const int ANCHO_JUGABLE = 85;
-const int ANCHO_ESTAD = 30;
-const int ALTO_JUGABLE = 21;
-const int ALTO_DIAL = 8;
+extern const int ANCHO_JUGABLE = 110;
+extern const int ANCHO_ESTAD = 30;
+extern const int ALTO_JUGABLE = 25;
+extern const int ALTO_DIAL = 8;
 
-const int TIEMPO_SLEEP = 75;
+extern const int TIEMPO_SLEEP = 75;
 
 #include "Utilidades.h"
 #include "Personaje.h"
@@ -26,7 +26,9 @@ const int TIEMPO_SLEEP = 75;
 #include "Mapa.h"
 #include "Nivel.h"
 #include "Interfaz.h"
+#include "Menu.h"
 #include "Juego.h"
+#include "JuegoBuilder.h"
 
 int main()
 {
@@ -42,6 +44,13 @@ int main()
 
     //Tiempo transcurrido
     int contadorFrames = 0;
+
+    // ------------------- Inicio ----------------------------
+
+    std::cout << "Antes de continuar, por favor ponga la consola en pantalla completa";
+    std::cout << "\nPresione cualquier tecla para continuar...";
+    system("pause > 0");
+    system("cls");
 
     // ------------------- Setup personajes -------------------
 
@@ -198,6 +207,15 @@ int main()
         "El sendero es grande. Es fácil perderse. Y nadie vendrá a ayudarte." });
 
     Nivel nivel1({ map, map2 }, {cinemIn, cinemFin});
+
+    Nivel nivel2({ map2, map2 }, { cinemFin, cinemIn });
+
+    Juego juego({ nivel1, nivel2 });
+
+    Menu elpepe = setupMenuInicio();
+
+    elpepe.mostrarMenu();
+    elpepe.manejarOpciones();
 
     // ------------------- Bucle Principal -------------------
 

@@ -21,20 +21,9 @@ public:
 		cinematica.push_back(s);
 	}
 
-
-	void dibujarBordesCinematica() {
-		for (int i = 0; i < ALTO_DIAL + ALTO_JUGABLE; i++) {
-			for (int j = 0; j < ANCHO_ESTAD + ANCHO_JUGABLE; j++) {
-				if (i == 0 || i == ALTO_DIAL + ALTO_JUGABLE - 1 || j == 0 || j == ANCHO_ESTAD + ANCHO_JUGABLE - 1) std::cout << u8"■";
-				else std::cout << " ";
-			}
-			std::cout << "\n";
-		}
-	}
-
 	void mostrarSlide() {
 		system("cls");
-		dibujarBordesCinematica();
+		dibujarBordesExterno();
 
 		for (int i = 0; i < cinematica[numSlide].size(); i++) {
 			SetConsoleCursorPosition(hConsole, { 3, static_cast<short>(2 + i) });

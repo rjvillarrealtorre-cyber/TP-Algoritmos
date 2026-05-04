@@ -1,7 +1,7 @@
 ﻿#pragma once
 #include <string>
 
-void mostrarEstadisticas(Protagonista& prot, int contadorFrames) {
+inline void mostrarEstadisticas(Protagonista& prot, int contadorFrames) {
     SetConsoleCursorPosition(hConsole, { short(ANCHO_JUGABLE + 2), 2 });
     std::cout << "[NOMBRE]:" << prot.getNombre();
 
