@@ -28,7 +28,9 @@ extern const int TIEMPO_SLEEP = 75;
 #include "Interfaz.h"
 #include "Menu.h"
 #include "Juego.h"
-#include "JuegoBuilder.h"
+
+#include "BuilderMenu.h"
+#include "BuilderCinematica.h"
 
 int main()
 {
@@ -75,7 +77,7 @@ int main()
 
     AliadoDinamico wlm("Wilmer", sr, sl, 'R', 100, 10, 10, 1);
 
-    
+
 
     ArbolDialogo arbol;
     arbol.agregarInteraccionVacia();
@@ -193,29 +195,13 @@ int main()
     enemigos.push_back(new EnemigoTalador(5, 5));
     enemigos.push_back(new EnemigoSaboteador(10, 10));
 
-    Mapa* map2 = new Mapa(mapa2, {}, {std::move(wlm)}, enemigos);
+    Mapa* map2 = new Mapa(mapa2, {}, { std::move(wlm) }, enemigos);
 
-    Cinematica cinemIn;
-    cinemIn.agregarSlide({ "Mateo: He aquí yo. Me encuentro en Puerto Esperanza, nombre castellano para",
-        "Kamitsa Pampa, 'La tierra del buen vivir'. Me llamo Mateo. Vengo en representación de Crónica",
-        "Viva, una revista de investigación basada en Lima, donde yo vivo..." });
+    Nivel nivel1({ map, map2 }, { setupCinNvl1Inicio() });
 
-    Cinematica cinemFin;
-    cinemIn.agregarSlide({ "Talador: ¿Qué es lo que haces aquí, forastero? ¿Eres acaso uno",
-        "de los tantos periodistas que vienen de la capital? Mira... te doy un consejo.",
-        "Escribe tu nota como te plazca. Este lugar es... curioso. Pero ten mucho cuidado...",
-        "El sendero es grande. Es fácil perderse. Y nadie vendrá a ayudarte." });
+    Juego juego({ nivel1 }, { setupMenuInicio(), setupMenuInstrucciones(), setupMenuCreditos() });
 
-    Nivel nivel1({ map, map2 }, {cinemIn, cinemFin});
-
-    Nivel nivel2({ map2, map2 }, { cinemFin, cinemIn });
-
-    Juego juego({ nivel1, nivel2 });
-
-    Menu elpepe = setupMenuInicio();
-
-    elpepe.mostrarMenu();
-    elpepe.manejarOpciones();
+    juego.manejarMenuInicio();
 
     // ------------------- Bucle Principal -------------------
 

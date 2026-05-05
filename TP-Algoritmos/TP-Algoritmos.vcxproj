@@ -124,12 +124,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="JuegoBuilder.h" />
+    <ClCompile Include="BuilderMenu.h" />
     <ClCompile Include="TP-Algoritmos.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AliadoDinamico.h" />
     <ClInclude Include="ArbolDialogo.h" />
+    <ClInclude Include="BuilderCinematica.h" />
     <ClInclude Include="Cinematica.h" />
     <ClInclude Include="Enemigo.h" />
     <ClInclude Include="Interfaz.h" />

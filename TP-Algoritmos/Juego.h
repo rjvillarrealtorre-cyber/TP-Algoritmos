@@ -19,4 +19,52 @@ public:
 		dibujarBordes();
 		niveles[nuevoNivel].dibujarMapa();
 	}
+
+	void manejarMenuInicio() {
+		menus[0].mostrarMenu(0);
+
+		while (menus[0].getEnMenu()) {
+			if (GetAsyncKeyState('1') & 0x0001) { // Jugar
+				for (Menu& m : menus) {
+					m.setEnMenu(false);
+				}
+
+				break;
+			}
+			else if (GetAsyncKeyState('2') & 0x0001) { // Instrucciones
+				menus[0].setEnMenu(false);
+				menus[1].setEnMenu(true);
+
+				manejarSubMenu(1);
+
+				break;
+			}
+			else if (GetAsyncKeyState('3') & 0x0001) { // Creditos
+				menus[0].setEnMenu(false);
+				menus[2].setEnMenu(true);
+
+				manejarSubMenu(2);
+
+				break;
+			}
+			else if (GetAsyncKeyState('4') & 0x0001) { // Salir
+				exit(0);
+			}
+		}
+	}
+
+	void manejarSubMenu(int menuActual) {
+		menus[menuActual].mostrarMenu(menuActual);
+
+		while (menus[menuActual].getEnMenu()) {
+			if (GetAsyncKeyState(VK_ESCAPE) & 0x0001) {
+				menus[0].setEnMenu(true);
+				menus[menuActual].setEnMenu(false);
+
+				break;
+			}
+		}
+
+		manejarMenuInicio();
+	}
 };

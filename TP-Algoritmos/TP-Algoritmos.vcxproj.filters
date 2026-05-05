@@ -18,7 +18,7 @@
     <ClCompile Include="TP-Algoritmos.cpp">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
-    <ClCompile Include="JuegoBuilder.h">
+    <ClCompile Include="BuilderMenu.h">
       <Filter>Archivos de encabezado</Filter>
     </ClCompile>
   </ItemGroup>
@@ -66,6 +66,9 @@
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
     <ClInclude Include="Nivel2.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
+    <ClInclude Include="BuilderCinematica.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
   </ItemGroup>
