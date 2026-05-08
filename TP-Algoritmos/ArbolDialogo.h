@@ -16,6 +16,7 @@ struct Opcion {
 	int siguienteDialogo;
 	int confianzaReq = 0;
 	int lenguaReq = 0;
+	bool acabaNivel = false;
 };
 
 // Diálogo: Lo que se muestra en la caja de diálogo. Un ejemplo de diálogo sería:
@@ -32,28 +33,64 @@ private:
 	bool poderElegir;
 	int eleccion;
 	std::vector<Opcion> opciones;
+
+	int sigDialogo;
+	bool yaMostrado;
+	bool estaEnEspanol;
+
+	int randNum;
 public:
-	Dialogo(std::vector<string> l) { //Constructor si no se puede elegir
+	Dialogo(std::vector<string> l, int sd = -1, bool eee = true) { //Constructor si no se puede elegir
 		lineas = l;
 		poderElegir = false;
 		eleccion = -1; // -1: aún no se eligió nada / elección inválida
+		sigDialogo = sd;
+		estaEnEspanol = eee;
+		yaMostrado = false;
+		randNum = std::rand() % 101;
 	}
 
-	Dialogo(std::vector<string> l, std::vector<Opcion> opc) { // Constructor si se puede elegir
+	Dialogo(std::vector<string> l, std::vector<Opcion> opc, bool eee = true) { // Constructor si se puede elegir
 		lineas = l;
 		poderElegir = true;
 		opciones = opc;
 		eleccion = -1;
+		sigDialogo = -1;
+		estaEnEspanol = eee;
+		yaMostrado = false;
+		randNum = std::rand() % 101;
 	}
 
-	void mostrarLineas() { //Imprime el diálogo en la pantalla
+	void mostrarLineas(int numConLengua) { //Imprime el diálogo en la pantalla
+		if (yaMostrado) return;
+		yaMostrado = true;
+
+		short centrar = (ANCHO_JUGABLE - lineas[0].size()) / 2;
+
 		for (int i = 0; i < lineas.size(); i++) {
-			SetConsoleCursorPosition(hConsole, { 2, static_cast<short>(ALTO_JUGABLE + 1 + i) });
-			std::cout << lineas[i];
+			if (!estaEnEspanol && (lineas[i][0] != '[' && lineas[i][0] != '|')) {
+				for (int j = 0; j < lineas[i].size(); j++) {
+					SetConsoleCursorPosition(hConsole, { short(centrar + 1 + j), static_cast<short>(ALTO_JUGABLE + 1 + i) });
+			
+					if (lineas[i][j] == ' ' || lineas[i][j] == ',' || lineas[i][j] == '.' || (lineas[i][j] >= 65 && lineas[i][j] <= 90) || lineas[i][j] == ':') {
+						std::cout << lineas[i][j];
+					}
+					else if (randNum <= numConLengua) {
+						std::cout << lineas[i][j];
+					}
+					else {
+						std::cout << "?";
+					}
+				}
+			}
+			else {
+				SetConsoleCursorPosition(hConsole, { short(centrar + 1), static_cast<short>(ALTO_JUGABLE + 1 + i) });
+				std::cout << lineas[i];
+			}
 		}
 
 		for (int i = 0; i < opciones.size(); i++) {
-			SetConsoleCursorPosition(hConsole, { 2, static_cast<short>(ALTO_JUGABLE + 1 + lineas.size() + i) });
+			SetConsoleCursorPosition(hConsole, { short(centrar + 1), static_cast<short>(ALTO_JUGABLE + 1 + lineas.size() + i) });
 			std::cout << (i + 1) << ": " << opciones[i].texto;
 		}
 	}
@@ -76,8 +113,10 @@ public:
 		Opcion& op = opciones[eleccion - 1];
 
 		//Si no se logran los requerimientos necesarios...
-		if (prot.getConfianza() < op.confianzaReq) return;
-		if (prot.getConocimientoLengua() < op.lenguaReq) return;
+		if (prot.getConfianza() < op.confianzaReq || prot.getConocimientoLengua() < op.lenguaReq) {
+			eleccion = -1;
+			return;
+		}
 
 		//Llamando a determinarConsecuencia...
 		if (eleccion != -1) determinarConsecuencia(prot, op);
@@ -98,6 +137,9 @@ public:
 
 	int getEleccion() { return eleccion; }
 	bool getPoderElegir() { return poderElegir; }
+	int getSiguienteDialogo() { return sigDialogo; }
+
+	void setYaMostrad(bool p) { yaMostrado = p; }
 	
 	Opcion& getOpcionElegida() {
 		return opciones[eleccion - 1];
@@ -123,12 +165,18 @@ private:
 	// Una interacción sería: std::vector<Dialogo> interaccion;
 	int numDialogo;
 public:
-	ArbolDialogo() {
+	ArbolDialogo(std::vector < std::vector<Dialogo> > a = {}) {
 		numDialogo = 0;
+		arbol = a;
 	}
 
 	// Para el setup...
 	void agregarDialogo(Dialogo d, int numInteraccion) {
+		if (arbol.empty()) {
+			std::vector<Dialogo> interaccion;
+			arbol.push_back(interaccion);
+		}
+
 		arbol[numInteraccion].push_back(d);
 	}
 
@@ -148,42 +196,60 @@ public:
 	}
 
 	// Imprime la interacción en la panatalla
-	void mostrarInteraccion(int numInteraccion) {
+	void mostrarInteraccion(int numInteraccion, int numConLengua) {
 		if (numDialogo >= arbol[numInteraccion].size() || numDialogo < 0) return;
 
-		arbol[numInteraccion][numDialogo].mostrarLineas();
+		arbol[numInteraccion][numDialogo].mostrarLineas(numConLengua);
 	}
 
 	// Función más importante. Se encarga del funcionamiento
 	// de cada interacción.
-	void manejarFlujoInteraccion(int numInteraccion, Protagonista& prot) {
+	bool manejarFlujoInteraccion(bool teclaE, int numInteraccion, Protagonista& prot) {
 		Dialogo& d = arbol[numInteraccion][numDialogo];
 
-		mostrarInteraccion(numInteraccion);
+		mostrarInteraccion(numInteraccion, prot.getConocimientoLengua());
 
 		// Caso sin elección (avanza con E)
-		if (!d.getPoderElegir() && (GetAsyncKeyState('E') & 0x0001)) {
+		if (!d.getPoderElegir() && teclaE) {
 			borrarCajaDialogo();
-			numDialogo++;
+			d.setYaMostrad(false);
 
-			if (numDialogo >= arbol[numInteraccion].size()) numDialogo = 0;
+			if (d.getSiguienteDialogo() != -1)
+				numDialogo = d.getSiguienteDialogo();
+			else
+				numDialogo++;
+
+			if (numDialogo >= arbol[numInteraccion].size())
+				numDialogo = 0;
 		}
 		// Caso con opciones
 		else if (d.getPoderElegir()) {
 			d.elegir(prot);
 
-			if (d.getEleccion() == -1) return;
+			if (d.getEleccion() == -1) return false;
 
 			Opcion& op = d.getOpcionElegida();
 
+			d.resetEleccion();
+
+			if (op.acabaNivel) return true;
+
+			d.setYaMostrad(false);
 			borrarCajaDialogo();
 
 			// cambiar al siguiente nodo según opción
 			numDialogo = op.siguienteDialogo;
 
 			if (numDialogo >= arbol[numInteraccion].size()) numDialogo = 0;
+		}
+		return false;
+	}
 
-			d.resetEleccion();
+	void resetDialogo() {
+		for (auto& interaccion : arbol) {
+			for (auto& dialogo : interaccion) {
+				dialogo.setYaMostrad(false);
+			}
 		}
 	}
 

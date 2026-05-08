@@ -32,6 +32,15 @@ inline int leerColor(int color) {
 	}
 }
 
+inline void dibujarIndicacionesDialogo() {
+	SetConsoleCursorPosition(hConsole, { 24, short(ALTO_JUGABLE + 3) });
+	std::cout << u8"Interactúe con cualquier personaje presionando la TECLA 'E'";
+	SetConsoleCursorPosition(hConsole, { 24, short(ALTO_JUGABLE + 4) });
+	std::cout << u8"Utilice los números [1, 2, 3, 4...] para elegir una  opción";
+	SetConsoleCursorPosition(hConsole, { 24, short(ALTO_JUGABLE + 5) });
+	std::cout << u8"de diálogo (en caso aplique).";
+}
+
 inline void dibujarBordes() {
 	for (int i = 1; i <= ALTO_JUGABLE + ALTO_DIAL; i++) {
 		for (int j = 1; j <= ANCHO_JUGABLE + ANCHO_ESTAD; j++) {

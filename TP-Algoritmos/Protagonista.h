@@ -27,11 +27,11 @@ public:
 	// Permite el movimiento con las flechas direccionales
 	void determinarMovimiento(const std::vector<std::vector<int>>& matrizMapa) {
 		if (GetAsyncKeyState(VK_RIGHT) & 0x8000) {
-			//Restricciones
+			//Restricciones	
 			if (!(x + ancho >= ANCHO_JUGABLE - 1) && (matrizMapa[y + 2][x + 1] == 3 || matrizMapa[y + 2][x + 1] == 4 || matrizMapa[y + 2][x + 1] == 5)) {
 				dir = 'R';
 				borrar(matrizMapa);
-				x++;
+				x += velocidad;
 				mostrar(matrizMapa);
 			}
 		}
@@ -39,7 +39,7 @@ public:
 			if (!(x <= 1) && (matrizMapa[y + 2][x - 1] == 3 || matrizMapa[y + 2][x - 1] == 4 || matrizMapa[y + 2][x - 1] == 5)) {
 				dir = 'L';
 				borrar(matrizMapa);
-				x--;
+				x -= velocidad;
 				mostrar(matrizMapa);
 			}
 		}

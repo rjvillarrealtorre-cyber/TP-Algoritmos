@@ -6,14 +6,14 @@ private:
 	int num;
 
 	std::vector<std::vector<int>> matrizMapa;
-	std::vector<AliadoEstatico> vecAliEst;
+	std::vector<NPCInteractuable> vecNPCInt;
 	std::vector<Enemigo*> vecEnemigo; // Aplicaremos polimorfismo
 	std::vector<AliadoDinamico> vecAliDinam;
 
 public:
-	Mapa(std::vector<std::vector<int>> mm, std::vector<AliadoEstatico> vae = {}, std::vector<AliadoDinamico> vad = {}, std::vector<Enemigo*> ve = {}) {
+	Mapa(std::vector<std::vector<int>> mm = {}, std::vector<NPCInteractuable> vae = {}, std::vector<AliadoDinamico> vad = {}, std::vector<Enemigo*> ve = {}) {
 		matrizMapa = mm;
-		vecAliEst = vae;
+		vecNPCInt = vae;
 		vecAliDinam = vad;
 		vecEnemigo = ve;
 	}
@@ -40,9 +40,12 @@ public:
 
 	std::vector<std::vector<int>>& getMatrizMapa() { return matrizMapa; }
 
-	std::vector<AliadoEstatico>& getVecAliEst() { return vecAliEst; }
+	std::vector<NPCInteractuable>& getVecNPCInt() { return vecNPCInt; }
 
 	std::vector<AliadoDinamico>& getVecAliDinam() { return vecAliDinam; }
 
 	std::vector<Enemigo*>& getVecEnemigo() { return vecEnemigo; }
+
+	void setMatrizMapa(std::vector<std::vector<int>> mm) { matrizMapa = mm;}
+	void setVecNPCInt(std::vector<NPCInteractuable> p) { vecNPCInt = p; }
 };

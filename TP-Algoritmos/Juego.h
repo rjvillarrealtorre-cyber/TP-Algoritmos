@@ -3,21 +3,27 @@
 // En cristiano: Un "juego" maneja y une los niveles con los menus
 class Juego {
 private:
-	std::vector<Nivel> niveles;
+	std::vector<Nivel*> niveles;
 	std::vector<Menu> menus;
 	int nivelActual;
 public:
-	Juego(std::vector<Nivel> n, std::vector<Menu> m = {}) {
+	Juego(std::vector<Nivel*> n, std::vector<Menu> m = {}) {
 		niveles = n;
 		menus = m;
 		nivelActual = 0;
 	}
 
+	~Juego() {
+		for (Nivel* n : niveles) {
+			delete n;
+		}
+	}
+
 	void manejarCambioNivel(int nuevoNivel) {
-		niveles[nuevoNivel].mostrarCinematica();
+		niveles[nuevoNivel]->mostrarCinematica();
 		system("cls");
 		dibujarBordes();
-		niveles[nuevoNivel].dibujarMapa();
+		niveles[nuevoNivel]->dibujarMapa();
 	}
 
 	void manejarMenuInicio() {
@@ -67,4 +73,12 @@ public:
 
 		manejarMenuInicio();
 	}
+
+	void acabarNivel() {
+		niveles[nivelActual]->mostrarCinematica(true);
+		if (nivelActual < niveles.size()) nivelActual++;
+	}
+
+	std::vector<Nivel*>& getVecNiveles() { return niveles; }
+	int getNivelActual() { return nivelActual; }
 };
