@@ -28,4 +28,7 @@ inline void mostrarEstadisticas(Protagonista& prot, int contadorFrames) {
 
     SetConsoleCursorPosition(hConsole, { short(ANCHO_JUGABLE + 2), 14 });
     std::cout << "[TIEMPO]: " << minutos << ":" << mostrarSegundos << "    ";
+
+    SetConsoleCursorPosition(hConsole, { short(ANCHO_JUGABLE + 2), 16 });
+    std::cout << "[SEMILLAs]: " << prot.getSemillas() << "    ";
 }

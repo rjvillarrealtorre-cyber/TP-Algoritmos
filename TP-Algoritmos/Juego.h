@@ -5,18 +5,22 @@ class Juego {
 private:
 	std::vector<Nivel*> niveles;
 	std::vector<Menu> menus;
+	Protagonista* prota;
 	int nivelActual;
 public:
-	Juego(std::vector<Nivel*> n, std::vector<Menu> m = {}) {
+	Juego(std::vector<Nivel*> n = {}, std::vector<Menu> m = {}, Protagonista* p = nullptr) {
 		niveles = n;
 		menus = m;
 		nivelActual = 0;
+		prota = p;
 	}
 
 	~Juego() {
 		for (Nivel* n : niveles) {
 			delete n;
 		}
+
+		delete prota;
 	}
 
 	void manejarCambioNivel(int nuevoNivel) {
@@ -81,4 +85,5 @@ public:
 
 	std::vector<Nivel*>& getVecNiveles() { return niveles; }
 	int getNivelActual() { return nivelActual; }
+	Protagonista* getProtagonista() { return prota; }
 };

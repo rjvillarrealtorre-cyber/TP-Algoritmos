@@ -3,29 +3,127 @@
 
 class Enemigo : public Personaje {
 protected:
-    int dx, dy;
+    float xI, yI;
+    int arbolObjetivo;
+
+    bool primeraVezHuye;
+    bool enHuida;
+    int contFramesHuida;
 public:
     Enemigo(float px, float py) : Personaje("", {}, {}, 'R', 100, px, py, 1) {
-        dx = (rand() % 3 + 1) * (rand() % 2 == 0 ? 1 : -1);
-        dy = (rand() % 3 + 1) * (rand() % 2 == 0 ? 1 : -1);
+        xI = px;
+        yI = py;
+        arbolObjetivo = -1;
+
+        primeraVezHuye = true;
+        enHuida = false;
+        contFramesHuida = 0;
     }
 
     virtual ~Enemigo() {}
 
-    void mover() {
-        if (x + ancho >= ANCHO_JUGABLE - 6 || x <= 4) dx *= -1;
+    void determinarObjetivo(std::vector<Arbol*> arboles) {
+        if (arboles.size() == 0) return;
 
-        if (y + alto >= ALTO_JUGABLE - 4 || y <= 4) dy *= -1;
-
-        x += dx;
-        y += dy;
+        if ((arbolObjetivo != -1 && (!arboles[arbolObjetivo]->getEstaVivo() || !arboles[arbolObjetivo]->getEstaGerminando())) || (arbolObjetivo == -1)) {
+            arbolObjetivo = rand() % arboles.size();
+        }
     }
 
-    void manejarMovimiento(std::vector<std::vector<int>>& matrizMapa) {
-        borrar(matrizMapa);
-        mover();
-        mostrar(matrizMapa);
+    void mover(std::vector<Arbol*> arboles) {
+        if (arbolObjetivo == -1) return;
+
+        if (arboles[arbolObjetivo]->getX() - x > 2) {
+            dir = 'R';
+            x++;
+        }
+        else if (arboles[arbolObjetivo]->getX() - x < -2) {
+            dir = 'L';
+            x--;
+        }
+
+        if (arboles[arbolObjetivo]->getY() - y > 0) y++;
+        else if (arboles[arbolObjetivo]->getY() - y < 0) y--;
     }
+
+    void moverInicio() {
+        if (xI - x > 0) {
+            dir = 'R';
+            x++;
+        }
+        else if (xI - x < 0) {
+            dir = 'L';
+            x--;
+        }
+
+        if (yI - y > 0) y++;
+        else if (yI - y < 0) y--;
+    }
+
+    void manejarEstado() {
+        if (enHuida) contFramesHuida++;
+
+        if (contFramesHuida >= 10 * (1000 / TIEMPO_SLEEP)) {
+            enHuida = false;
+            primeraVezHuye = false;
+        }
+    }
+
+    void manejarMovimiento(std::vector<Arbol*> arboles) {
+        if (enHuida) moverInicio();
+        else mover(arboles);
+    }
+
+    bool determinarCercaniaAliado(AliadoDinamico ali) {
+        if ((std::abs(ali.getX() - x) <= 6) && (std::abs(ali.getY() - y) <= 3))
+            return true;
+        return false;
+    }
+
+    void sabotear(std::vector<Arbol*>& arboles, AliadoDinamico ali) {
+        if (arbolObjetivo == -1) return;
+        
+        bool hayColision = verificarColision({ short(x), short(y) }, ancho + 2, alto + 2,
+            { short(arboles[arbolObjetivo]->getX()), short(arboles[arbolObjetivo]->getY()) },
+            arboles[arbolObjetivo]->getAncho(), arboles[arbolObjetivo]->getAlto());
+        
+        if (hayColision && determinarCercaniaAliado(ali)) {
+            arboles[arbolObjetivo]->anadirMultiplicador();
+            arboles[arbolObjetivo]->setVelocidadSabotaje(0.5 * (arboles[arbolObjetivo]->getMultiplicadorSabotaje() + 1));
+            arboles[arbolObjetivo]->setSiendoSabotead(true);
+        }
+        else if (hayColision) {
+            // ---
+            arboles[arbolObjetivo]->anadirMultiplicador();
+            arboles[arbolObjetivo]->setVelocidadSabotaje(1 * (arboles[arbolObjetivo]->getMultiplicadorSabotaje() + 1));
+            arboles[arbolObjetivo]->setSiendoSabotead(true);
+        }
+        //else if (!hayColision && arboles[arbolObjetivo]->getSiendoSaboteado()) {
+        //    arboles[arbolObjetivo]->setSiendoSabotead(false);
+        //}
+    }
+
+    void verColisionJugador(Protagonista& prot) {
+        bool hayColision = verificarColision({ short(x), short(y) }, ancho, alto,
+            { short(prot.getX()), short(prot.getY()) }, prot.getAncho(), prot.getAlto());
+
+        if (!hayColision) return;
+
+        if(!prot.getInvulnerable()) prot.setVida(prot.getVida() - 10);
+        prot.setInvulnerable(true);
+        invulnerable = true;
+
+        if (arbolObjetivo == -1 || prot.getArboles().empty()) return;
+
+        if (arbolObjetivo >= 0 && prot.getArboles()[arbolObjetivo]->getEstaVivo() && !invulnerable)
+            prot.getArboles()[arbolObjetivo]->setContFramesSabotear(prot.getArboles()[arbolObjetivo]->getContFramesSabotear() - 3 * (1000 / TIEMPO_SLEEP));
+        if (primeraVezHuye) {
+            enHuida = true;
+            prot.getArboles()[arbolObjetivo]->setSiendoSabotead(false);
+            arbolObjetivo = -1;
+        }
+    }
+
 };
 
 class EnemigoTalador : public Enemigo {
@@ -33,14 +131,14 @@ public:
     EnemigoTalador(float px, float py) : Enemigo(px, py) {
         spriteR = {
             { " ", "_", " ", " ", " "},
-            { " ", "Ø", " ", "|", ">"},
+            { " ", u8"Ø", " ", "|", ">"},
             { "<", "|", "-", "|", " "},
             { " ", "|", "\\", " ", " "},
         };
 
         spriteL = {
             { " ", " ", " ", "_", " "},
-            { "<", "|", " ", "Ø", " "},
+            { "<", "|", " ", u8"Ø", " "},
             { " ", "|", "-", "|", ">"},
             { " ", " ", "/", "|", " "},
         };
@@ -48,6 +146,13 @@ public:
         int dx = (rand() % 3 + 1) * (rand() % 2 == 0 ? 1 : -1);
 
         velocidad = dx;
+
+        alto = spriteR.size();
+        int temp = 0;
+        for (int i = 0; i < alto; i++) {
+            if (spriteR[i].size() > temp) temp = spriteR[i].size();
+        }
+        ancho = temp;
     }
 };
 
@@ -68,5 +173,12 @@ public:
 
         int dx = (rand() % 5 + 2) * (rand() % 2 == 0 ? 1 : -1);
         velocidad = dx;
+
+        alto = spriteR.size();
+        int temp = 0;
+        for (int i = 0; i < alto; i++) {
+            if (spriteR[i].size() > temp) temp = spriteR[i].size();
+        }
+        ancho = temp;
     }
 };

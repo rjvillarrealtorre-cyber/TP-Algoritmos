@@ -32,6 +32,22 @@ inline int leerColor(int color) {
 	}
 }
 
+inline int leerColorNormal(int color) {
+	switch (color) {
+	case -1: return 0x0; // Fondo Negro
+	case 0: return 0x8; // "" Gris Oscuro
+	case 1: return 0x6; // Amarillo Oscuro
+	case 2: return 0x1; // Azul oscuro
+	case 3: return 0x2; // Verde oscuro
+	case 4: return 0xA; // Verde Claro
+	case 5: return 0x7; // Gris claro
+	case 6: return 0xC; // Rojo claro
+	case 7: return 0x4; // Rojo oscuro
+	case 8: return 0x9; // Celeste
+	case 9: return 0xE; // Amarillo claro
+	}
+}
+
 inline void dibujarIndicacionesDialogo() {
 	SetConsoleCursorPosition(hConsole, { 24, short(ALTO_JUGABLE + 3) });
 	std::cout << u8"Interactúe con cualquier personaje presionando la TECLA 'E'";
@@ -73,4 +89,24 @@ inline void dibujarMapa(std::vector<std::vector<int>>& matrizMapa) {
 			SetConsoleTextAttribute(hConsole, 0x7);
 		}
 	}
+}
+
+inline bool verificarColision(
+	COORD posA, int anchoA, int altoA,
+	COORD posB, int anchoB, int altoB)
+{
+	// Si A está completamente a la izquierda de B
+	if (posA.X + anchoA <= posB.X) return false;
+
+	// Si A está completamente a la derecha de B
+	if (posB.X + anchoB <= posA.X) return false;
+
+	// Si A está completamente arriba de B
+	if (posA.Y + altoA <= posB.Y) return false;
+
+	// Si A está completamente debajo de B
+	if (posB.Y + altoB <= posA.Y) return false;
+
+	// En cualquier otro caso, hay superposición (colisión)
+	return true;
 }

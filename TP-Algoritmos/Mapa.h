@@ -10,12 +10,18 @@ private:
 	std::vector<Enemigo*> vecEnemigo; // Aplicaremos polimorfismo
 	std::vector<AliadoDinamico> vecAliDinam;
 
+	int contFramesMapa;
+	bool enemigoAnadido;
+
 public:
 	Mapa(std::vector<std::vector<int>> mm = {}, std::vector<NPCInteractuable> vae = {}, std::vector<AliadoDinamico> vad = {}, std::vector<Enemigo*> ve = {}) {
 		matrizMapa = mm;
 		vecNPCInt = vae;
 		vecAliDinam = vad;
 		vecEnemigo = ve;
+
+		contFramesMapa = 0;
+		enemigoAnadido = false;
 	}
 
 	~Mapa() {
@@ -36,6 +42,18 @@ public:
 		}
 	}
 
+	void anadirEnemigosNivel2(int nivelActual) {
+		// if (nivelActual != 1) return;
+		if (enemigoAnadido) return;
+
+		int segTranscurridos = ((contFramesMapa * TIEMPO_SLEEP) / 1000) % 60;
+
+		if (segTranscurridos == 30) {
+			enemigoAnadido = true;
+			vecEnemigo.push_back(new EnemigoSaboteador(20, 14));
+		}
+	}
+
 	//Setters y getters
 
 	std::vector<std::vector<int>>& getMatrizMapa() { return matrizMapa; }
@@ -48,4 +66,8 @@ public:
 
 	void setMatrizMapa(std::vector<std::vector<int>> mm) { matrizMapa = mm;}
 	void setVecNPCInt(std::vector<NPCInteractuable> p) { vecNPCInt = p; }
+	void setVecEnemigos(std::vector<Enemigo*>& e) { vecEnemigo = e; }
+	void setVecAliDin(std::vector<AliadoDinamico> ad) { vecAliDinam = ad; }
+
+	void anadirContadorFrames() { contFramesMapa++; }
 };

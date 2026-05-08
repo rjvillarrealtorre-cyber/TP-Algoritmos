@@ -18,6 +18,9 @@ protected:
 	float x, y;
 	int velocidad;
 	int alto, ancho;
+
+	bool invulnerable;
+	int contFramesInvulnerabilidad;
 public:
 	Personaje(string n, std::vector<std::vector<string>> sr, std::vector<std::vector<string>> sl,  char d, int v, float px, float py, int vlc) {
 		nombre = n;
@@ -75,14 +78,39 @@ public:
 	void mostrar(const std::vector<std::vector<int>>& matrizMapa) {
 		for (int i = 0; i < direccionSprite().size(); i++) {
 			for (int j = 0; j < direccionSprite()[i].size(); j++) {
+				int colorDibujado = 0x0;
+				if (invulnerable) colorDibujado = 12;
+				int colorFondo = leerColorNormal(matrizMapa.at(y + i - 1).at(x + j - 1));
+
 				SetConsoleCursorPosition(hConsole, { static_cast<short>(x + j), static_cast<short>(y + i) });
-				SetConsoleTextAttribute(hConsole, leerColor(matrizMapa.at(y + i - 1).at(x + j - 1)));
+				SetConsoleTextAttribute(hConsole, (colorFondo << 4) | colorDibujado);
 				std::cout << direccionSprite()[i][j];
 				SetConsoleTextAttribute(hConsole, 0x7);
 			}
 		}
 	}
 
+	void manejarInvulnerabilidad() {
+		if (!invulnerable) return;
+
+		contFramesInvulnerabilidad++;
+		if (contFramesInvulnerabilidad >= 1 * (1000 / TIEMPO_SLEEP)) {
+			invulnerable = false;
+			contFramesInvulnerabilidad = 0;
+		}
+	}
+
 	string getNombre() { return nombre; }
 	int getVida() { return vida; }
+
+	int getX() { return x; }
+	int getY() { return y; }
+	int getAncho() { return ancho; }
+	int getAlto() { return alto; }
+
+	void setX(float px) { x = px; }
+	void setVida(int v) { vida = v; }
+
+	void setInvulnerable(bool p) { invulnerable = p; }
+	bool getInvulnerable() { return invulnerable; }
 };

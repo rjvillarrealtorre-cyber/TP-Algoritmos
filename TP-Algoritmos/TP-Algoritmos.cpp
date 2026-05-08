@@ -17,6 +17,7 @@ extern const int TIEMPO_SLEEP = 75;
 #include "Utilidades.h"
 #include "Personaje.h"
 #include "ArbolDialogo.h"
+#include "Arbol.h"
 #include "Protagonista.h"
 #include "Npc.h"
 #include "AliadoDinamico.h"
@@ -61,19 +62,22 @@ int main()
 
     // ------------------- Setup personajes -------------------
 
-    Protagonista prot = setupProtagonista();
+    Protagonista* prot = setupProtagonista();
 
     Nivel* nivel1 = setupNivel1();
+    Nivel* nivel2 = setupNivel2();
 
-    Juego juego({ nivel1 }, { setupMenuInicio(), setupMenuInstrucciones(), setupMenuCreditos() });
+    Juego juego({ nivel2 }, { setupMenuInicio(), setupMenuInstrucciones(), setupMenuCreditos() }, prot);
 
     juego.manejarMenuInicio();
 
     // ------------------- Bucle Principal -------------------
 
-    bool primeraVez = true;
+    bool primeraVez = false;
 
     bool teclaE = false;
+
+    juego.getProtagonista()->setAltoConfiablePermitido(ALTO_DIAL + ALTO_JUGABLE);
 
     while (true) {
         teclaE = (GetAsyncKeyState('E') & 0x0001);
@@ -83,7 +87,7 @@ int main()
 
         if (primeraVez) {
             dibujarIndicacionesDialogo();
-            prot.mostrar(juego.getVecNiveles()[nivelActual]->getMapaActual()->getMatrizMapa());
+            juego.getProtagonista()->mostrar(juego.getVecNiveles()[nivelActual]->getMapaActual()->getMatrizMapa());
             primeraVez = false;
         }
 
@@ -91,7 +95,7 @@ int main()
             ali.mostrar(juego.getVecNiveles()[nivelActual]->getMapaActual()->getMatrizMapa());
 
             bool acabarNivel =
-                ali.manejarInteraccion(prot, teclaE);
+                ali.manejarInteraccion(*juego.getProtagonista(), teclaE);
 
             if (acabarNivel) {
                 juego.acabarNivel();
@@ -100,21 +104,40 @@ int main()
 
         for (AliadoDinamico& ali : juego.getVecNiveles()[nivelActual]->getMapaActual()->getVecAliDinam()) {
             ali.manejarEstados();
-            ali.manejarMovimiento(juego.getVecNiveles()[nivelActual]->getMapaActual()->getMatrizMapa(), prot);
+            ali.manejarMovimiento(juego.getVecNiveles()[nivelActual]->getMapaActual()->getMatrizMapa(), *juego.getProtagonista());
         }
 
         for (Enemigo* en : juego.getVecNiveles()[nivelActual]->getMapaActual()->getVecEnemigo()) {
-            en->manejarMovimiento(juego.getVecNiveles()[nivelActual]->getMapaActual()->getMatrizMapa());
+            en->determinarObjetivo(juego.getProtagonista()->getArboles());
+            en->verColisionJugador(*juego.getProtagonista());
+            en->manejarEstado();
+            en->manejarInvulnerabilidad();
+            en->borrar(juego.getVecNiveles()[nivelActual]->getMapaActual()->getMatrizMapa());
+            en->manejarMovimiento(juego.getProtagonista()->getArboles());
+            en->sabotear(juego.getProtagonista()->getArboles(), juego.getVecNiveles()[nivelActual]->getMapaActual()->getVecAliDinam()[0]);
+            en->mostrar(juego.getVecNiveles()[nivelActual]->getMapaActual()->getMatrizMapa());
         }
 
-        prot.determinarMovimiento(juego.getVecNiveles()[nivelActual]->getMapaActual()->getMatrizMapa());
+        juego.getProtagonista()->plantarArbol(teclaE, juego.getVecNiveles()[nivelActual]->getMapaActual()->getMatrizMapa());
 
-        mostrarEstadisticas(prot, contadorFrames);
+        for (Arbol* arbol : juego.getProtagonista()->getArboles()) {
+            arbol->manejarCrecimiento(juego.getVecNiveles()[nivelActual]->getMapaActual()->getMatrizMapa());
+            arbol->mostrar(juego.getVecNiveles()[nivelActual]->getMapaActual()->getMatrizMapa());
 
-        nivel1->observarPorCambioMapa(prot, teclaE);
+        }
+
+        juego.getVecNiveles()[nivelActual]->getMapaActual()->anadirEnemigosNivel2(nivelActual);
+
+        juego.getProtagonista()->determinarMovimiento(juego.getVecNiveles()[nivelActual]->getMapaActual()->getMatrizMapa());
+        juego.getProtagonista()->manejarInvulnerabilidad();
+
+        mostrarEstadisticas(*juego.getProtagonista(), contadorFrames);
+
+        nivel1->observarPorCambioMapa(*juego.getProtagonista(), teclaE);
 
         // Miscelánea
         contadorFrames++;
+        juego.getVecNiveles()[nivelActual]->getMapaActual()->anadirContadorFrames();
 
         Sleep(TIEMPO_SLEEP);
     }

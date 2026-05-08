@@ -129,6 +129,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AliadoDinamico.h" />
+    <ClInclude Include="Arbol.h" />
     <ClInclude Include="ArbolDialogo.h" />
     <ClInclude Include="BuilderCinematica.h" />
     <ClInclude Include="BuilderNivel.h" />

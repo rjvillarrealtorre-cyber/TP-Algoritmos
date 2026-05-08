@@ -1,7 +1,7 @@
 ﻿#pragma once
 
-Protagonista setupProtagonista() {
-	Protagonista prota(
+Protagonista* setupProtagonista() {
+	Protagonista* prota = new Protagonista(
 		"Mateo",
 		{ {"_", u8"∧", "_"},
 			{" ", "O"},
@@ -14,8 +14,8 @@ Protagonista setupProtagonista() {
 		'R',
 		100,
 		25, 15,
-		2,
-		0,
+		1,
+		100,
 		0,
 		0
 	);

@@ -1,5 +1,6 @@
 #pragma once
 #include "Personaje.h"
+#include "Arbol.h"
 
 /*
 	CLASE PROTAGONISTA:
@@ -16,12 +17,29 @@ private:
 	int confianza;
 	int evidencia;
 	int conocimientoLengua;
+	int semillas;
+
+	std::vector<Arbol*> arboles;
+
+	int altoJugablePermitido;
 public:
 	Protagonista(string n, std::vector<std::vector<string>> sr, std::vector<std::vector<string>> sl, char d, int v, float px, float py, int vlc, int cnf, int ev, int cl) : 
 		Personaje(n, sr, sl, d, v, px, py, vlc) {
 		confianza = cnf;
 		evidencia = ev;
 		conocimientoLengua = cl;
+
+		semillas = 6;
+		arboles = {};
+
+		altoJugablePermitido = ALTO_JUGABLE;
+		contFramesInvulnerabilidad = 0;
+	}
+
+	~Protagonista() {
+		for (Arbol* arbol : arboles) {
+			delete arbol;
+		}
 	}
 
 	// Permite el movimiento con las flechas direccionales
@@ -52,11 +70,24 @@ public:
 			}
 		}
 		else if (GetAsyncKeyState(VK_DOWN) & 0x8000) {
-			if (!(y + alto >= ALTO_JUGABLE - 1)) {
+			if (!(y + alto >= altoJugablePermitido - 1)) {
 				borrar(matrizMapa);
 				y++;
 				mostrar(matrizMapa);
 			}
+		}
+	}
+
+	void plantarArbol(bool teclaE, std::vector<std::vector<int>> matrizMapa) {
+		if (!teclaE || semillas <= 0) return;
+
+		semillas--;
+
+		if (dir == 'R' && matrizMapa[y - 1][x + ancho] == 4) {
+			arboles.push_back(new Arbol("arbol", {}, float(x + ancho + 1), float(y)));
+		}
+		else if (dir == 'L' && matrizMapa[y - 1][x - 2] == 4) {
+			arboles.push_back(new Arbol("arbol", {}, float(x - 1), float(y)));
 		}
 	}
 
@@ -65,15 +96,15 @@ public:
 	int getConfianza() { return confianza; }
 	int getEvidencia() { return evidencia;}
 	int getConocimientoLengua() { return conocimientoLengua;}
+	std::vector<Arbol*>& getArboles() { return arboles; }
+	int getSemillas() { return semillas; }
 
-	float getX() { return x; }
-	float getY() { return y; }
 
 	// Setters
 
 	void setConfianza(int p) { confianza = p; }
 	void setEvidencia(int p) { evidencia = p; }
 	void setConocimientoLengua(int p) { conocimientoLengua = p; }
-
-	void setX(float p) { x = p; }
+	void setAltoConfiablePermitido(int p) { altoJugablePermitido = p; }
+	
 };
