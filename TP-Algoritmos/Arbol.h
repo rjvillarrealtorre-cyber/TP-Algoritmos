@@ -113,6 +113,8 @@ public:
 		manejarContadores();
 		mostrarContadores();
 		cambiarSprites(matrizMapa);
+
+		velocidadSabotaje = 1;
 	}
 
 	bool getEstaVivo() { return vivo; }

@@ -84,7 +84,7 @@ public:
     void sabotear(std::vector<Arbol*>& arboles, AliadoDinamico ali) {
         if (arbolObjetivo == -1) return;
         
-        bool hayColision = verificarColision({ short(x), short(y) }, ancho + 2, alto + 2,
+        bool hayColision = verificarColision({ short(x), short(y) }, ancho + 3, alto + 2,
             { short(arboles[arbolObjetivo]->getX()), short(arboles[arbolObjetivo]->getY()) },
             arboles[arbolObjetivo]->getAncho(), arboles[arbolObjetivo]->getAlto());
         
@@ -99,9 +99,9 @@ public:
             arboles[arbolObjetivo]->setVelocidadSabotaje(1 * (arboles[arbolObjetivo]->getMultiplicadorSabotaje() + 1));
             arboles[arbolObjetivo]->setSiendoSabotead(true);
         }
-        //else if (!hayColision && arboles[arbolObjetivo]->getSiendoSaboteado()) {
-        //    arboles[arbolObjetivo]->setSiendoSabotead(false);
-        //}
+        else if (!hayColision && arboles[arbolObjetivo]->getSiendoSaboteado()) {
+            arboles[arbolObjetivo]->setSiendoSabotead(false);
+        }
     }
 
     void verColisionJugador(Protagonista& prot) {
@@ -117,7 +117,7 @@ public:
         if (arbolObjetivo == -1 || prot.getArboles().empty()) return;
 
         if (arbolObjetivo >= 0 && prot.getArboles()[arbolObjetivo]->getEstaVivo() && !invulnerable)
-            prot.getArboles()[arbolObjetivo]->setContFramesSabotear(prot.getArboles()[arbolObjetivo]->getContFramesSabotear() - 3 * (1000 / TIEMPO_SLEEP));
+            prot.getArboles()[arbolObjetivo]->setContFramesSabotear(prot.getArboles()[arbolObjetivo]->getContFramesSabotear() - (3 / (1000 / TIEMPO_SLEEP)));
         if (primeraVezHuye) {
             enHuida = true;
             prot.getArboles()[arbolObjetivo]->setSiendoSabotead(false);

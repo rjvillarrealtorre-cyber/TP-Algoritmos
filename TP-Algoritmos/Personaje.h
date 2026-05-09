@@ -109,6 +109,7 @@ public:
 	int getAlto() { return alto; }
 
 	void setX(float px) { x = px; }
+	void setY(float py) { y = py; }
 	void setVida(int v) { vida = v; }
 
 	void setInvulnerable(bool p) { invulnerable = p; }

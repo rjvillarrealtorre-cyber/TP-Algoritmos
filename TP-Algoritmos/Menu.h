@@ -19,9 +19,9 @@ public:
 		dibujarBordesExterno();
 		dibujarMapa(matrizFondo);
 
-		//Por limitaciones t�cnicas, string.length devuelve en BYTES, as� que no se puede
-		//utilizarlo para hallar la cantidad que se deber�a poner para que sea centrado.
-		//Y no se puede utilizar polimorfismo pues ser�a el triple de trabajo.
+		//Por limitaciones tícnicas, string.length devuelve en BYTES, así que no se puede
+		//utilizarlo para hallar la cantidad que se debería poner para que sea centrado.
+		//Y no se puede utilizar polimorfismo pues sería el triple de trabajo.
 		short altoTitulo, anchoTitulo;
 		short altoOpciones, anchoOpciones;
 		switch (tipo) {
@@ -48,6 +48,14 @@ public:
 			altoTitulo = 3;
 			anchoOpciones = 37;
 			altoOpciones = 11;
+
+			break;
+		}
+		case 3: { // Derrota
+			anchoTitulo = 47;
+			altoTitulo = 6;
+			anchoOpciones = 33;
+			altoOpciones = 18;
 
 			break;
 		}

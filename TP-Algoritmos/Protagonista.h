@@ -41,8 +41,9 @@ public:
 	}
 
 	~Protagonista() {
+
 		for (Arbol* arbol : arboles) {
-			delete arbol;
+			if(arbol != nullptr) delete arbol;
 		}
 	}
 

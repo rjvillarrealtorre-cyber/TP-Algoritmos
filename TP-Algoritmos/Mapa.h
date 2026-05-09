@@ -28,11 +28,11 @@ public:
 
 	~Mapa() {
 		for (Enemigo* enemigo : vecEnemigo) {
-			delete enemigo;
+			if(enemigo != nullptr) delete enemigo;
 		}
 
 		for (EnemigoBote* en : vecEnemBote) {
-			delete en;
+			if (en != nullptr) delete en;
 		}
 	}
 

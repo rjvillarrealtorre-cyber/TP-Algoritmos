@@ -92,6 +92,20 @@ public:
 	}
 
 	void acabarNivel() {
+		if (nivelActual == 1) {
+			prota->setX(20);
+			prota->setY(12);
+
+			for (Arbol* arbol : prota->getArboles()) {
+				delete arbol;
+			}
+			prota->getArboles().clear();
+
+			for (Enemigo* enemigo : niveles[nivelActual]->getMapaActual()->getVecEnemigo()) {
+				delete enemigo;
+			}
+		}
+
 		niveles[nivelActual]->mostrarCinematica(true);
 		if (nivelActual < niveles.size()) nivelActual++;
 
@@ -112,22 +126,40 @@ public:
 		}
 	}
 
-
-
-	/*
 	void mostrarDerrota() {
-		system("cls");
-		std::cout << "DERROTA!\n";
-		std::cout << "ESC para volver a intentar!";
-		if (GetAsyncKeyState(VK_ESCAPE) & 0x0001) {
-			prota->setSemillas(6);
+		Menu ventanaDerrota = setupMenuDerrota();
+		bool enDerrota = true;
 
-			manejarCambioNivel(nivelActual);
+		while (true) {
+			ventanaDerrota.mostrarMenu(3);
+
+			while (enDerrota) {
+				if (GetAsyncKeyState(VK_RETURN) & 0x0001) {
+					prota->setVida(100);
+					prota->setSemillas(6);
+
+					switch (nivelActual) {
+					case 0: delete niveles[nivelActual]; niveles[nivelActual] = setupNivel1(); break;
+					case 1: delete niveles[nivelActual]; niveles[nivelActual] = setupNivel2(); break;
+					case 2: delete niveles[nivelActual]; niveles[nivelActual] = setupNivel3(); break;
+					}
+
+					enDerrota = false;
+					break;
+				}
+
+				if (GetAsyncKeyState(VK_ESCAPE) & 0x0001) {
+					exit(0);
+				}
+			}
+
+			if (!enDerrota) break;
 		}
 	}
-	*/
 
 	void manejarVictoriaDerrota() {
+		if (prota->getVida() <= 0) mostrarDerrota();
+
 		if (nivelActual == 1) {
 			//Victoria
 			int arbolesGerminados = 0;
@@ -139,27 +171,29 @@ public:
 			if (arbolesGerminados >= 4) acabarNivel();
 		
 			//Derrota
-			// int arbolesGerminando = 0;
-			// for (int i = 0; i < prota->getArboles().size(); i++) {
-			// 	if (prota->getArboles()[i]->getEstaGerminando()) arbolesGerminando++;
-			// }
-			// 
-			// if (prota->getSemillas() <= 0 && arbolesGerminados < 4 && arbolesGerminando < 4)
-			// 	mostrarDerrota();
+			int arbolesGerminando = 0;
+			for (int i = 0; i < prota->getArboles().size(); i++) {
+				if (prota->getArboles()[i]->getEstaGerminando()) arbolesGerminando++;
+			}
+			
+			if (prota->getSemillas() <= 0 && arbolesGerminados < 4 && arbolesGerminando <= 0)
+				mostrarDerrota();
 		}
 		else if (nivelActual == 2) {
 			//Victoria
-			if (!(niveles[nivelActual]->getMapaActual()->getContFrames() * (TIEMPO_SLEEP / 1000) >= 60)) return;
+			float segundos = niveles[nivelActual]->getMapaActual()->getContFrames()
+				* TIEMPO_SLEEP / 1000.0f;
 
-			acabarNivel();
+			if (segundos >= 60.0f) {
+				acabarNivel();
+			}
 		}
 	}
 
 	void manejarBuclePrincipal() {
 		//Variables
 		bool teclaE = (GetAsyncKeyState('E') & 0x0001);
-		int nivelActual = getNivelActual();
-		std::vector<std::vector<int>> matrizMapa = niveles[nivelActual]->getMapaActual()->getMatrizMapa();;
+		std::vector<std::vector<int>>& matrizMapa = niveles[nivelActual]->getMapaActual()->getMatrizMapa();;
 
 
 		getVecNiveles()[nivelActual]->mostrarCinematica(); //si aplica...
@@ -229,7 +263,7 @@ public:
 		// Estadisticas
 		bool estadis = nivelActual == 1 ? true : false;
 
-		mostrarEstadisticas(*prota, contadorFrames, estadis);
+		mostrarEstadisticas(*prota, niveles[nivelActual]->getMapaActual()->getContFrames(), estadis);
 		if(nivelActual == 1)
 			mostrarEstadisticasNivel2(*prota, niveles[nivelActual]->getMapaActual()->getVecAliDinam()[0]);
 
