@@ -5,9 +5,11 @@ private:
 	string nombre;
 	int num;
 
+	ManejoObstaculos controlObstaculos;
 	std::vector<std::vector<int>> matrizMapa;
 	std::vector<NPCInteractuable> vecNPCInt;
 	std::vector<Enemigo*> vecEnemigo; // Aplicaremos polimorfismo
+	std::vector<EnemigoBote*> vecEnemBote;
 	std::vector<AliadoDinamico> vecAliDinam;
 
 	int contFramesMapa;
@@ -27,6 +29,10 @@ public:
 	~Mapa() {
 		for (Enemigo* enemigo : vecEnemigo) {
 			delete enemigo;
+		}
+
+		for (EnemigoBote* en : vecEnemBote) {
+			delete en;
 		}
 	}
 
@@ -57,17 +63,19 @@ public:
 	//Setters y getters
 
 	std::vector<std::vector<int>>& getMatrizMapa() { return matrizMapa; }
-
 	std::vector<NPCInteractuable>& getVecNPCInt() { return vecNPCInt; }
-
 	std::vector<AliadoDinamico>& getVecAliDinam() { return vecAliDinam; }
-
 	std::vector<Enemigo*>& getVecEnemigo() { return vecEnemigo; }
+	std::vector<EnemigoBote*> getVecEnemBote() { return vecEnemBote; }
+	ManejoObstaculos& getManejoObstaculos() { return controlObstaculos; }
+	int getContFrames() { return contFramesMapa; }
 
 	void setMatrizMapa(std::vector<std::vector<int>> mm) { matrizMapa = mm;}
 	void setVecNPCInt(std::vector<NPCInteractuable> p) { vecNPCInt = p; }
 	void setVecEnemigos(std::vector<Enemigo*>& e) { vecEnemigo = e; }
+	void setVecEnemBote(std::vector<EnemigoBote*> e) { vecEnemBote = e; }
 	void setVecAliDin(std::vector<AliadoDinamico> ad) { vecAliDinam = ad; }
+	void setManejoObstacull(ManejoObstaculos p) { controlObstaculos = p; }
 
 	void anadirContadorFrames() { contFramesMapa++; }
 };

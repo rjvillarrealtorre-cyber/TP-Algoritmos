@@ -26,6 +26,8 @@ public:
 	}
 
 	bool manejarInteraccion(Protagonista& prot, bool teclaE) {
+		if (arbol.getArbol().empty()) return false;
+
 		if (teclaE && determinarCercania(prot) && !enInteraccion) {
 			enInteraccion = true;
 		}

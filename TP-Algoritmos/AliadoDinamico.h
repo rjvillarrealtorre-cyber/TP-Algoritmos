@@ -43,4 +43,6 @@ public:
 			mostrar(mapaDinamico);
 		}
 	}
+
+	string getEstado() { return estado; }
 };

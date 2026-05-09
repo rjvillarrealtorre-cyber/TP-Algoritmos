@@ -15,7 +15,7 @@ Protagonista* setupProtagonista() {
 		100,
 		25, 15,
 		1,
-		100,
+		30,
 		0,
 		0
 	);

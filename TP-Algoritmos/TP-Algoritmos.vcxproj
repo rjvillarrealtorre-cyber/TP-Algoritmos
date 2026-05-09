@@ -144,8 +144,10 @@
     <ClInclude Include="Menu.h" />
     <ClInclude Include="Nivel.h" />
     <ClInclude Include="Nivel2.h" />
+    <ClInclude Include="Obstaculo.h" />
     <ClInclude Include="Personaje.h" />
     <ClInclude Include="Protagonista.h" />
+    <ClInclude Include="Proyectil.h" />
     <ClInclude Include="Utilidades.h" />
   </ItemGroup>
   <ItemGroup>

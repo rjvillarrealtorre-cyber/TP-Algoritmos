@@ -1,5 +1,6 @@
-#pragma once
+﻿#pragma once
 #include "Personaje.h"
+#include "Proyectil.h"
 
 class Enemigo : public Personaje {
 protected:
@@ -131,14 +132,14 @@ public:
     EnemigoTalador(float px, float py) : Enemigo(px, py) {
         spriteR = {
             { " ", "_", " ", " ", " "},
-            { " ", u8"�", " ", "|", ">"},
+            { " ", u8"Ø", " ", "|", ">"},
             { "<", "|", "-", "|", " "},
             { " ", "|", "\\", " ", " "},
         };
 
         spriteL = {
             { " ", " ", " ", "_", " "},
-            { "<", "|", " ", u8"�", " "},
+            { "<", "|", " ", u8"Ø", " "},
             { " ", "|", "-", "|", ">"},
             { " ", " ", "/", "|", " "},
         };
@@ -180,5 +181,121 @@ public:
             if (spriteR[i].size() > temp) temp = spriteR[i].size();
         }
         ancho = temp;
+    }
+};
+
+class EnemigoBote : public Personaje {
+private:
+    std::vector<ProyectilEnemigo*> proyectiles;
+    int disparosHechos;
+    int contFramesDisparo;
+
+    int xI, yI;
+public:
+    EnemigoBote(float px, float py) : Personaje("", {}, {}, 'R', 100, px, py, 1) {
+        spriteR = {
+            {" ", " ", " ", " ", "O", " ", " ", " ", "O", " ", " ", " ", " "},
+            {" ", "_", "_", "<", "|", "L", "_", "(", "|", "\\", "_", "/", ">"},
+            {u8"ᗡ", "|", "_", "_", "_", "_", "_", "_", "_", "_","/"," ", " "},
+        };
+        spriteL = spriteR;
+
+        alto = spriteR.size();
+        int temp = 0;
+        for (int i = 0; i < alto; i++) {
+            if (spriteR[i].size() > temp) temp = spriteR[i].size();
+        }
+        ancho = temp;
+
+        disparosHechos = 0;
+        contFramesDisparo = 0;
+
+        xI = rand() % (50 - 15 + 1) + 15;
+        yI = rand() % (5 - 0 + 1) + 1;
+    }
+
+    ~EnemigoBote() {
+        for (ProyectilEnemigo* pe : proyectiles) {
+            delete pe;
+        }
+    }
+
+    void manejarMovimiento(Protagonista& prot) {
+        if (prot.getX() - x > xI) {
+            x++;
+        }
+        else if (prot.getX() - x < -xI) {
+            x--;
+        }
+
+        if (prot.getY() - y > yI) y++;
+        else if (prot.getY() - y < -yI) y--;
+    }
+
+    void disparar() {
+        float randomNum = 0.5 + (static_cast<float>(std::rand()) / RAND_MAX) * 0.5;
+        proyectiles.push_back(new ProyectilEnemigo(true, x + ancho + 1, y + alto / 2, '*', randomNum, 10));
+    }
+
+    void manejarTiempoDisparos(Protagonista& prot) {
+        contFramesDisparo++;
+
+        float segTranscurridos = (contFramesDisparo * TIEMPO_SLEEP) / 1000.0f;
+        if (segTranscurridos >= 5) {
+            disparar();
+            disparosHechos++;
+            contFramesDisparo = 0;
+        }
+    }
+
+    void borrarProyectil(int i) {
+        delete proyectiles[i];
+        proyectiles.erase(proyectiles.begin() + i);
+    }
+
+    void manejarColisiones(Protagonista& prot) {
+        bool invulnerable = prot.getInvulnerable();
+        if (invulnerable) return;
+
+        bool colisionBoteBote = verificarColision({ short(x), short(y) }, ancho, alto,
+            { short(prot.getX()), short(prot.getY()) }, prot.getAncho(), prot.getAlto());
+
+        if (colisionBoteBote) {
+            prot.setVida(prot.getVida() - 10);
+            prot.setInvulnerable(true);
+        }
+
+        for (int i = 0; i < proyectiles.size(); i++) {
+            bool colisionProyectil = verificarColision({ short(proyectiles[i]->getX()), short(proyectiles[i]->getY()) },
+                1, 1, { short(prot.getX()), short(prot.getY()) }, prot.getAncho(), prot.getAlto());
+
+            if (!colisionProyectil) return;
+
+            prot.setVida(prot.getVida() - 10);
+            prot.setInvulnerable(true);
+            borrarProyectil(i);
+        }
+    }
+
+    void manejarDisparos(Protagonista& prot, std::vector<std::vector<int>> matrizMapa) {
+        manejarTiempoDisparos(prot);
+
+        if (proyectiles.empty()) return;
+
+        for (int i = 0; i < proyectiles.size(); i++) {
+            if (proyectiles[i]->getX() <= 0 || proyectiles[i]->getX() >= ANCHO_JUGABLE - 2) {
+                borrarProyectil(i);
+                continue;
+            }
+            proyectiles[i]->borrarProyectil(matrizMapa);
+            proyectiles[i]->setX(proyectiles[i]->getX() + proyectiles[i]->getVelocidad());
+
+            if (proyectiles[i]->getX() <= 0 || proyectiles[i]->getX() >= ANCHO_JUGABLE - 2) {
+                borrarProyectil(i);
+                continue;
+            }
+
+            proyectiles[i]->mostrarProyectil(matrizMapa);
+        }
     }
 };

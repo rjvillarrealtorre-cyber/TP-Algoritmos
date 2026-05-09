@@ -7,12 +7,25 @@ private:
 	std::vector<Menu> menus;
 	Protagonista* prota;
 	int nivelActual;
+	int contadorFrames;
 public:
 	Juego(std::vector<Nivel*> n = {}, std::vector<Menu> m = {}, Protagonista* p = nullptr) {
 		niveles = n;
 		menus = m;
 		nivelActual = 0;
 		prota = p;
+
+		prota = setupProtagonista();
+
+		niveles.push_back(setupNivel1());
+		niveles.push_back(setupNivel2());
+		niveles.push_back(setupNivel3());
+
+		menus.push_back(setupMenuInicio());
+		menus.push_back(setupMenuInstrucciones());
+		menus.push_back(setupMenuCreditos());
+
+		contadorFrames = 0;
 	}
 
 	~Juego() {
@@ -81,9 +94,154 @@ public:
 	void acabarNivel() {
 		niveles[nivelActual]->mostrarCinematica(true);
 		if (nivelActual < niveles.size()) nivelActual++;
+
+		prota->setVida(100);
+
+		if (nivelActual == 1) {
+			prota->setAltoJugablePermitido(ALTO_JUGABLE + ALTO_DIAL - 1);
+		}
+		else if (nivelActual == 2) {
+			prota->setAltoJugablePermitido(ALTO_JUGABLE - 1);
+			prota->setSprite({
+				{" ", " ", " ", "O", " ", " ", " ", "o", " ", " ", "O", " ", " ", "_", " ", " ", " ", " ", " "},
+				{" ", "_", "—", "|", ")", "_", "_", "|", "_", "_", "|", "_", "|", "_", "\\", "_", "_", "_", "."},
+				{"=", "|", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "/", " "}, }
+				);
+			prota->setEnBote(true);
+			prota->recalcularAltoAncho();
+		}
+	}
+
+
+
+	/*
+	void mostrarDerrota() {
+		system("cls");
+		std::cout << "DERROTA!\n";
+		std::cout << "ESC para volver a intentar!";
+		if (GetAsyncKeyState(VK_ESCAPE) & 0x0001) {
+			prota->setSemillas(6);
+
+			manejarCambioNivel(nivelActual);
+		}
+	}
+	*/
+
+	void manejarVictoriaDerrota() {
+		if (nivelActual == 1) {
+			//Victoria
+			int arbolesGerminados = 0;
+			for (int i = 0; i < prota->getArboles().size(); i++) {
+				if (prota->getArboles()[i]->getEstaVivo() &&
+					!prota->getArboles()[i]->getEstaGerminando()) arbolesGerminados++;
+			}
+		
+			if (arbolesGerminados >= 4) acabarNivel();
+		
+			//Derrota
+			// int arbolesGerminando = 0;
+			// for (int i = 0; i < prota->getArboles().size(); i++) {
+			// 	if (prota->getArboles()[i]->getEstaGerminando()) arbolesGerminando++;
+			// }
+			// 
+			// if (prota->getSemillas() <= 0 && arbolesGerminados < 4 && arbolesGerminando < 4)
+			// 	mostrarDerrota();
+		}
+		else if (nivelActual == 2) {
+			//Victoria
+			if (!(niveles[nivelActual]->getMapaActual()->getContFrames() * (TIEMPO_SLEEP / 1000) >= 60)) return;
+
+			acabarNivel();
+		}
+	}
+
+	void manejarBuclePrincipal() {
+		//Variables
+		bool teclaE = (GetAsyncKeyState('E') & 0x0001);
+		int nivelActual = getNivelActual();
+		std::vector<std::vector<int>> matrizMapa = niveles[nivelActual]->getMapaActual()->getMatrizMapa();;
+
+
+		getVecNiveles()[nivelActual]->mostrarCinematica(); //si aplica...
+
+		for (NPCInteractuable& ali : niveles[nivelActual]->getMapaActual()->getVecNPCInt()) {
+			ali.mostrar(matrizMapa);
+
+			bool aN = ali.manejarInteraccion(*prota, teclaE);
+
+			if (aN) acabarNivel();
+		}
+
+		for (AliadoDinamico& ali : niveles[nivelActual]->getMapaActual()->getVecAliDinam()) {
+			ali.manejarEstados();
+			ali.manejarMovimiento(matrizMapa, *prota);
+		}
+
+		if (nivelActual == 1) {
+			for (Enemigo* en : niveles[nivelActual]->getMapaActual()->getVecEnemigo()) {
+				en->determinarObjetivo(prota->getArboles());
+				en->verColisionJugador(*prota);
+				en->manejarEstado();
+				en->manejarInvulnerabilidad();
+				en->borrar(matrizMapa);
+				en->manejarMovimiento(prota->getArboles());
+
+				if (!niveles[nivelActual]->getMapaActual()->getVecAliDinam().empty())
+					en->sabotear(prota->getArboles(), niveles[nivelActual]->getMapaActual()->getVecAliDinam()[0]);
+
+				en->mostrar(matrizMapa);
+			}
+
+			prota->plantarArbol(teclaE, matrizMapa);
+		}
+
+		if (nivelActual == 2) {
+			for (EnemigoBote* enB : niveles[nivelActual]->getMapaActual()->getVecEnemBote()) {
+				enB->borrar(matrizMapa);
+				enB->manejarMovimiento(*prota);
+				enB->mostrar(matrizMapa);
+
+				enB->manejarDisparos(*prota, matrizMapa);
+				enB->manejarColisiones(*prota);
+
+				niveles[nivelActual]->getMapaActual()->getManejoObstaculos().manejarObstaculos(matrizMapa, *prota);
+			}
+		}
+
+
+		for (Arbol* arbol : prota->getArboles()) {
+			arbol->manejarCrecimiento(matrizMapa);
+			arbol->mostrar(matrizMapa);
+
+		}
+
+		niveles[nivelActual]->getMapaActual()->anadirEnemigosNivel2(nivelActual);
+
+		prota->determinarMovimiento(matrizMapa);
+		prota->manejarInvulnerabilidad();
+		prota->mostrar(matrizMapa);
+
+		// Otros
+		if (nivelActual == 0) niveles[nivelActual]->observarPorCambioMapa(*prota, teclaE);
+
+		manejarVictoriaDerrota();
+
+		// Estadisticas
+		bool estadis = nivelActual == 1 ? true : false;
+
+		mostrarEstadisticas(*prota, contadorFrames, estadis);
+		if(nivelActual == 1)
+			mostrarEstadisticasNivel2(*prota, niveles[nivelActual]->getMapaActual()->getVecAliDinam()[0]);
+
+		//Miscelanea
+		contadorFrames++;
+		niveles[nivelActual]->getMapaActual()->anadirContadorFrames();
+
+		Sleep(TIEMPO_SLEEP);
 	}
 
 	std::vector<Nivel*>& getVecNiveles() { return niveles; }
 	int getNivelActual() { return nivelActual; }
 	Protagonista* getProtagonista() { return prota; }
+	void setProtagonista(Protagonista* p) { prota = p; }
 };

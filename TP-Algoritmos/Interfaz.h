@@ -1,7 +1,17 @@
 ﻿#pragma once
 #include <string>
 
-inline void mostrarEstadisticas(Protagonista& prot, int contadorFrames) {
+inline void mostrarEstadisticasNivel2(Protagonista& prot, AliadoDinamico ali) {
+    SetConsoleCursorPosition(hConsole, { short(ANCHO_JUGABLE + 2), 14 });
+    std::cout << "[SEMILLAS]: " << prot.getSemillas() << " ";
+
+    string estadoAliado = ali.getEstado() == "seguir" ? "SIGUIENDO" : "INMOVIL";
+
+    SetConsoleCursorPosition(hConsole, { short(ANCHO_JUGABLE + 2), 16 });
+    std::cout << "[ALIADO]: " << estadoAliado << "   ";
+}
+
+inline void mostrarEstadisticas(Protagonista& prot, int contadorFrames, bool esNivel2) {
     SetConsoleCursorPosition(hConsole, { short(ANCHO_JUGABLE + 2), 2 });
     std::cout << "[NOMBRE]:" << prot.getNombre();
 
@@ -20,15 +30,14 @@ inline void mostrarEstadisticas(Protagonista& prot, int contadorFrames) {
     SetConsoleCursorPosition(hConsole, { short(ANCHO_JUGABLE + 2), 12 });
     std::cout << "[NIVEL]: 1" << "    ";
 
-    // Cálculo del tiempo
+    //Mostrar tiempo
+    short alturaTiempo = esNivel2 ? 18 : 14;
+
     int segundos = ((contadorFrames * TIEMPO_SLEEP) / 1000) % 60;
     int minutos = ((contadorFrames * TIEMPO_SLEEP) / 1000) / 60;
 
     string mostrarSegundos = (segundos < 10) ? ("0" + std::to_string(segundos)) : std::to_string(segundos);
 
-    SetConsoleCursorPosition(hConsole, { short(ANCHO_JUGABLE + 2), 14 });
+    SetConsoleCursorPosition(hConsole, { short(ANCHO_JUGABLE + 2), alturaTiempo });
     std::cout << "[TIEMPO]: " << minutos << ":" << mostrarSegundos << "    ";
-
-    SetConsoleCursorPosition(hConsole, { short(ANCHO_JUGABLE + 2), 16 });
-    std::cout << "[SEMILLAs]: " << prot.getSemillas() << "    ";
 }

@@ -253,4 +253,5 @@ public:
 		}
 	}
 
+	std::vector<std::vector<Dialogo>> getArbol() { return arbol; }
 };
