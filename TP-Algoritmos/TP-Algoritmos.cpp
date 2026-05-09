@@ -3,6 +3,7 @@
 #include <cstdlib>
 #include <vector>
 #include <clocale>
+#include <direct.h>
 using std::string;
 
 HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -13,6 +14,11 @@ extern const int ALTO_JUGABLE = 25;
 extern const int ALTO_DIAL = 10;
 
 extern const int TIEMPO_SLEEP = 75;
+
+#define MINIAUDIO_IMPLEMENTATION
+#include "miniaudio.h"
+
+#include "AudioManager.h"
 
 #include "Utilidades.h"
 #include "Personaje.h"
@@ -39,6 +45,7 @@ extern const int TIEMPO_SLEEP = 75;
 
 #include "Juego.h"
 
+
 int main()
 {
     // ------------------- Setup inicial -------------------
@@ -52,7 +59,6 @@ int main()
     std::srand(std::time(NULL));
 
     // ------------------- Inicio ----------------------------
-
     std::cout << "Antes de continuar, por favor ponga la consola en pantalla completa\n";
     std::cout << "Si tiene problemas con la resolución, haga sus carácteres más pequeños\n";
     std::cout << "presionando CTRL, y mueva la ruedita del mouse.\n";

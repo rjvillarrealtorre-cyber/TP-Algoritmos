@@ -131,6 +131,22 @@ Cinematica setupCinNvl1Inicio() {
 		u8" puños?"
 		}, 29, 6);
 
+	cin.agregarSlide({
+		u8"                      ╻┏┓╻┏━┓╺┳╸┏━┓╻ ╻┏━╸┏━╸╻┏━┓┏┓╻┏━╸┏━┓                      ",
+		u8"                      ┃┃┗┫┗━┓ ┃ ┣┳┛┃ ┃┃  ┃  ┃┃ ┃┃┗┫┣╸ ┗━┓                      ",
+		u8"                      ╹╹ ╹┗━┛ ╹ ╹┗╸┗━┛┗━╸┗━╸╹┗━┛╹ ╹┗━╸┗━┛                      ",
+		u8" ",
+		u8" Tienes que ganarte la confianza de los pobladores para que ellos te dejen ver",
+		u8" a su líder comunal. Para hacerlo, interactúa con ellos.  La mayoría de diálo-",
+		u8" gos te permiten elegir una respuesta, que tiene un impacto en: Confianza, Co-",
+		u8" nocimiento de lengua, y Evidencia. Para moverte entre mapas,  ve a los bordes",
+		u8" derechos o izquierdos de la mapa y presione 'E'.",
+		u8" ",
+		u8" [FLECHAS DIRECCIONALES] Movimiento",
+		u8" [E] Interactuar con un personaje / Moverse entre mapas ",
+		u8" [1 / 2 / 3 / 4] Elegir opción",
+		}, 29, 11);
+
 	return cin;
 }
 
@@ -398,27 +414,48 @@ Cinematica setupCinNvl2Inicio() {
 		}, 29, 6);
 
 	cin.agregarSlide({
-	u8" MATEO: Iré a la quebrada. Plantaré las semillas. Y luego volveré.",
-	u8" ",
-	u8" Don Evaristo asiente lentamente. No parece sorprendido.    Parece que esperaba",
-	u8" desde antes esa respuesta. Solamente quería una confirmación.",
-	u8" ",
-	u8" EVARISTO: Bien. Pero lleva a alguien contigo. Solo, no sobrevivirás.   Lleva a",
-	u8" Wilmer contigo. Él conoce el terreno. Y te protegerá.",
-	u8" ",
-	u8" Se acerca a la mesa, y saca una caja de madera tallada con patrones que no lo-",
-	u8" gro reconocer.",
-	u8"",
-	u8" EVARISTO: Este es nuestro dossier. Dos años de fotos. Testimonios.  Registros.",
-	u8" Pruebas. Todo lo que hemos podido reunir durante este tiempo.   Cuando vuelvas",
-	u8" de la quebrada, será tuyo. Pero tendrás que ganártelo.",
-	u8" ",
-	u8" EVARISTO: Una cosa más, periodista. Estas semillas que te entrego son las últi",
-	u8" mas de toda Kametsa Pampa.    Si las pierdes, nuestro pueblo se quedará sin su",
-	u8" planta sagrada, quizás para siempre.  Y su esperanza de curarse de su enferme-",
-	u8" dad de espíritu desaparecerán eternamente en el vacío.    Piensa ello mientras",
-	u8" caminas...",
+		u8" MATEO: Iré a la quebrada. Plantaré las semillas. Y luego volveré.",
+		u8" ",
+		u8" Don Evaristo asiente lentamente. No parece sorprendido.    Parece que esperaba",
+		u8" desde antes esa respuesta. Solamente quería una confirmación.",
+		u8" ",
+		u8" EVARISTO: Bien. Pero lleva a alguien contigo. Solo, no sobrevivirás.   Lleva a",
+		u8" Wilmer contigo. Él conoce el terreno. Y te protegerá.",
+		u8" ",
+		u8" Se acerca a la mesa, y saca una caja de madera tallada con patrones que no lo-",
+		u8" gro reconocer.",
+		u8"",
+		u8" EVARISTO: Este es nuestro dossier. Dos años de fotos. Testimonios.  Registros.",
+		u8" Pruebas. Todo lo que hemos podido reunir durante este tiempo.   Cuando vuelvas",
+		u8" de la quebrada, será tuyo. Pero tendrás que ganártelo.",
+		u8" ",
+		u8" EVARISTO: Una cosa más, periodista. Estas semillas que te entrego son las últi",
+		u8" mas de toda Kametsa Pampa.    Si las pierdes, nuestro pueblo se quedará sin su",
+		u8" planta sagrada, quizás para siempre.  Y su esperanza de curarse de su enferme-",
+		u8" dad de espíritu desaparecerán eternamente en el vacío.    Piensa ello mientras",
+		u8" caminas...",
 		}, 29, 7);
+
+	cin.agregarSlide({
+		u8"                      ╻┏┓╻┏━┓╺┳╸┏━┓╻ ╻┏━╸┏━╸╻┏━┓┏┓╻┏━╸┏━┓                      ",
+		u8"                      ┃┃┗┫┗━┓ ┃ ┣┳┛┃ ┃┃  ┃  ┃┃ ┃┃┗┫┣╸ ┗━┓                      ",
+		u8"                      ╹╹ ╹┗━┛ ╹ ╹┗╸┗━┛┗━╸┗━╸╹┗━┛╹ ╹┗━╸┗━┛                      ",
+		u8" ",
+		u8" Tu objetivo es PLANTAR al menos 4 ÁRBOLES y esperar 20 SEGUNDOS a que germinen",
+		u8" Los enemigos, sin embargo, intentarán evitarlo. Irán por los árboles. Y si es-",
+		u8" tán saboteando el árbol por 10 SEGUNDOS, el árbol morirá.",
+		u8" ",
+		u8" Puedes empujar a los enemigos para que huyan por 10 segundos. Sin embargo, es",
+		u8" to solo funciona UNA VEZ. Si lo intenta a hacer, ellos te ignorarán. Nota que",
+		u8" cada empuje te hace perder 10 de vida.",
+		u8" ",
+		u8" Puedes estacionar a Wilmer cerca a los árboles que germinan para hacer  dudar",
+		u8" a los enemigos, los cuáles tardarán el doble de tiempo en sabotear el árbol.",
+		u8" ",
+		u8" [FLECHAS DIRECCIONALES] Movimiento",
+		u8" [E] Plantar un árbol (solo en una parcela de color claro)",
+		u8" [Q] Comandar a Wilmer (Seguir / Estacionarse)",
+		}, 29, 8);
 
 	return cin;
 }
@@ -532,21 +569,21 @@ Cinematica setupCinNvl2Final() {
 
 	return cin;
 }          
-
+                                                                   
 Cinematica setupCinNvl3Inicio() {
 	Cinematica cin;
 
 	cin.agregarSlide({
-		u8"▄▄  ▄▄ ▄▄ ▄▄ ▄▄      ████▄     ▄▄     ▄▄▄    ▄▄   ▄▄ ▄▄▄▄▄ ▄▄   ▄▄  ▄▄▄  ▄▄▄▄  ▄▄  ▄▄▄    ▄▄ ▄▄ ▄▄ ▄▄ ▄▄  ▄▄▄ ",
-		u8"███▄██ ██▄██ ██       ▄▄██ ▀   ██    ██▀██   ██▀▄▀██ ██▄▄  ██▀▄▀██ ██▀██ ██▄█▄ ██ ██▀██   ██▄██ ██ ██▄██ ██▀██",
-		u8"██ ▀██  ▀█▀  ██▄▄▄   ▄▄▄█▀ ▄   ██▄▄▄ ██▀██   ██   ██ ██▄▄▄ ██   ██ ▀███▀ ██ ██ ██ ██▀██    ▀█▀  ██  ▀█▀  ██▀██",
+		u8"▄▄  ▄▄ ▄▄ ▄▄ ▄▄      ████▄     ▄████▄ ▄▄  ▄▄ ▄▄▄▄▄▄ ▄▄▄▄▄   ▄▄▄▄▄ ▄▄       ▄▄▄▄  ▄▄▄  ▄▄ ▄▄ ▄▄▄▄   ▄▄▄  ▄▄   ",
+		u8"███▄██ ██▄██ ██       ▄▄██ ▀   ██▄▄██ ███▄██   ██   ██▄▄    ██▄▄  ██      ██▀▀▀ ██▀██ ██ ██ ██▀██ ██▀██ ██   ",
+		u8"██ ▀██  ▀█▀  ██▄▄▄   ▄▄▄█▀ ▄   ██  ██ ██ ▀██   ██   ██▄▄▄   ██▄▄▄ ██▄▄▄   ▀████ ██▀██ ▀███▀ ████▀ ██▀██ ██▄▄▄",
 		u8" ",
 		u8" ",
-		u8"                    ┏━╸┏━┓┏━┓┏━┓╺━┓┏━┓┏┓╻   ╺┳┓┏━╸   ╻┏ ┏━┓┏┳┓┏━╸╺┳╸┏━┓┏━┓   ┏━┓┏━┓┏┳┓┏━┓┏━┓                  ",
-		u8"                    ┃  ┃ ┃┣┳┛┣━┫┏━┛┃ ┃┃┗┫    ┃┃┣╸    ┣┻┓┣━┫┃┃┃┣╸  ┃ ┗━┓┣━┫   ┣━┛┣━┫┃┃┃┣━┛┣━┫                  ",
-		u8"                    ┗━╸┗━┛╹┗╸╹ ╹┗━╸┗━┛╹ ╹   ╺┻┛┗━╸   ╹ ╹╹ ╹╹ ╹┗━╸ ╹ ┗━┛╹ ╹   ╹  ╹ ╹╹ ╹╹  ╹ ╹                  ",
-		u8"                                                                                                              ",
-		u8"    																									         ",
+		u8"                                             ┏━┓╻┏━┓   ┏━╸┏┓╻┏━╸                                             ",
+		u8"                                             ┣┳┛┃┃ ┃   ┣╸ ┃┗┫┣╸                                             ",
+		u8"                                             ╹┗╸╹┗━┛   ┗━╸╹ ╹┗━╸                                             ",
+		u8" ",
+		u8" ",
 		u8"     ┃ ╺┳┓┏━╸   ┏━┓╻ ╻┏━╸   ┏━┓╻┏━┓╻ ╻┏━╸   ┏━┓┏━┓╻  ╻ ╻┏━┓┏━┓   ╻  ┏━┓   ╺┳╸╻┏━╸┏━┓┏━┓┏━┓   ┏━┓╻   ┏━┓┏━╸    ",
 		u8"    ┏━  ┃┃┣╸    ┃┓┃┃ ┃┣╸    ┗━┓┃┣┳┛┃┏┛┣╸    ┗━┓┣━┫┃  ┃┏┛┣━┫┣┳┛   ┃  ┣━┫    ┃ ┃┣╸ ┣┳┛┣┳┛┣━┫   ┗━┓┃   ┗━┓┣╸     ",
 		u8"    ┗━┛╺┻┛┗━╸   ┗┻┛┗━┛┗━╸   ┗━┛╹╹┗╸┗┛ ┗━╸   ┗━┛╹ ╹┗━╸┗┛ ╹ ╹╹┗╸   ┗━╸╹ ╹    ╹ ╹┗━╸╹┗╸╹┗╸╹ ╹   ┗━┛╹   ┗━┛┗━╸    ",
@@ -558,7 +595,7 @@ Cinematica setupCinNvl3Inicio() {
 		u8" ┏━ ╺┳╸┏━╸┏━╸╻  ┏━┓┏━┓   ╺┳┓╻┏━┓ ━┓   ┏━╸┏━┓┏┓╻╺┳╸╻┏┓╻╻ ╻┏━┓┏━┓         ┏━ ┏━╸┏━┓┏━╸ ━┓   ┏━┓┏━┓╻  ╺┳╸┏━┓┏━┓  ",
 		u8" ┃   ┃ ┣╸ ┃  ┃  ┣━┫┗━┓    ┃┃┃┣┳┛  ┃   ┃  ┃ ┃┃┗┫ ┃ ┃┃┗┫┃ ┃┣━┫┣┳┛   ╺━╸   ┃  ┣╸ ┗━┓┃    ┃   ┗━┓┣━┫┃   ┃ ┣━┫┣┳┛  ",
 		u8" ┗━  ╹ ┗━╸┗━╸┗━╸╹ ╹┗━┛   ╺┻┛╹╹┗╸ ━┛   ┗━╸┗━┛╹ ╹ ╹ ╹╹ ╹┗━┛╹ ╹╹┗╸         ┗━ ┗━╸┗━┛┗━╸ ━┛   ┗━┛╹ ╹┗━╸ ╹ ╹ ╹╹┗╸  ",
-		}, 8, 7);
+		}, 15, 7);
 
 	cin.agregarSlide({
 		u8"“Debéis amar la paz como  medio  para  nuevas guerras. Y la paz corta más que la",
@@ -684,6 +721,20 @@ Cinematica setupCinNvl3Inicio() {
 		u8" Kametsa Pampa. Y vivirás por siempre en nuestra memoria...",
 		}, 29, 6);
 
+	cin.agregarSlide({
+		u8"                      ╻┏┓╻┏━┓╺┳╸┏━┓╻ ╻┏━╸┏━╸╻┏━┓┏┓╻┏━╸┏━┓                      ",
+		u8"                      ┃┃┗┫┗━┓ ┃ ┣┳┛┃ ┃┃  ┃  ┃┃ ┃┃┗┫┣╸ ┗━┓                      ",
+		u8"                      ╹╹ ╹┗━┛ ╹ ╹┗╸┗━┛┗━╸┗━╸╹┗━┛╹ ╹┗━╸┗━┛                      ",
+		u8" ",
+		u8" Tu objetivo es simple: SOBREVIVIR. Una balsa te perseguirá por todo el nivel.",
+		u8" Tendrás que esquivar sus disparos y los obstáculos que aparecen cada interva-",
+		u8" lo.",
+		u8" ",
+		u8" Para ganar, tienes que sobrevivir 60 segundos.",
+		u8" ",
+		u8" [FLECHAS DIRECCIONALES] Movimiento",
+		}, 29, 12);
+
 	return cin;
 }
 
@@ -793,6 +844,26 @@ Cinematica setupCinNvl3Final() {
 		u8" bará solamente la primera etapa. Porque este aprendizaje...     durará toda mi",
 		u8" vida. Me despido de Wilmer. De Jeremías. Y desde lejos, de Don Evaristo.",
 		}, 29, 6);
+
+	cin.agregarSlide({
+		u8" ▄   ▄▄▄▄     ▄▄       ▄▄     ▄▄▄    ▄▄      ▄▄▄▄▄     ▄▄▄▄▄▄▄    ▄▄▄▄▄▄▄",
+		u8" ▀██████▀   ▄█▀▀█▄     ██▄   ██▀   ▄█▀▀█▄   ██▀▀▀▀█▄  █▀▀██▀▀▀▀  █▀██▀▀▀ ",
+		u8"   ██   ▄   ██  ██     ███▄  ██    ██  ██   ▀██▄  ▄▀     ██        ██    ",
+		u8"   ██  ██   ██▀▀██     ██ ▀█▄██    ██▀▀██     ▀██▄▄      ██        ████  ",
+		u8"   ██  ██ ▄ ██  ██     ██   ▀██  ▄ ██  ██   ▄   ▀██▄     ██        ██    ",
+		u8"   ▀█████ ▀██▀  ▀█▄█ ▀██▀    ██  ▀██▀  ▀█▄█ ▀██████▀     ▀██▄      ▀█████",
+		u8"   ▄   ██                                                                ",
+		u8"   ▀████▀                                                                ",
+		u8" ",
+		u8"                       ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~                       ",
+		u8" ",
+		u8" Has escuchado la historia de Kametsa Pampa.",
+		u8" Has aprendido su lengua, sus cantos, sus estrellas.",
+		u8" Has restaurado lo que otros quisieron destruir.",
+		u8" ",
+		u8" Ahora, cuenta la historia.",
+		u8" El mundo está esperando.",
+		}, 29, 7);
 
 	return cin;
 }

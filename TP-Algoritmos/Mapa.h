@@ -14,7 +14,6 @@ private:
 
 	int contFramesMapa;
 	bool enemigoAnadido;
-
 public:
 	Mapa(std::vector<std::vector<int>> mm = {}, std::vector<NPCInteractuable> vae = {}, std::vector<AliadoDinamico> vad = {}, std::vector<Enemigo*> ve = {}) {
 		matrizMapa = mm;

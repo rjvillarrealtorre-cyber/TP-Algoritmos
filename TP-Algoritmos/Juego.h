@@ -8,6 +8,12 @@ private:
 	Protagonista* prota;
 	int nivelActual;
 	int contadorFrames;
+
+	AudioManager audio;
+	ma_sound* musicaMenu;
+	ma_sound* musicaNvl1;
+	ma_sound* musicaNvl2;
+	ma_sound* musicaNvl3;
 public:
 	Juego(std::vector<Nivel*> n = {}, std::vector<Menu> m = {}, Protagonista* p = nullptr) {
 		niveles = n;
@@ -26,6 +32,23 @@ public:
 		menus.push_back(setupMenuCreditos());
 
 		contadorFrames = 0;
+
+		musicaMenu = audio.cargarSonido("bgm_action_0.wav", true);
+		audio.setVolumen(musicaMenu, 0.2f);
+
+		musicaNvl1 = audio.cargarSonido("bgm_action_1.wav", true);
+		audio.setVolumen(musicaNvl1, 0.2f);
+
+		musicaNvl2 = audio.cargarSonido("bgm_action_2.mp3", true);
+		audio.setVolumen(musicaNvl2, 0.2f);
+
+		musicaNvl3 = audio.cargarSonido("bgm_action_3.wav", true);
+		audio.setVolumen(musicaNvl3, 0.2f);
+
+		if (musicaMenu == nullptr) {
+			std::cout << "ERROR MUSICA MENU\n";
+			system("pause>0");
+		}
 	}
 
 	~Juego() {
@@ -44,6 +67,7 @@ public:
 	}
 
 	void manejarMenuInicio() {
+		audio.reproducir(musicaMenu);
 		menus[0].mostrarMenu(0);
 
 		while (menus[0].getEnMenu()) {
@@ -51,6 +75,8 @@ public:
 				for (Menu& m : menus) {
 					m.setEnMenu(false);
 				}
+				audio.detener(musicaMenu);
+				audio.reproducir(musicaNvl1);
 
 				break;
 			}
@@ -92,7 +118,21 @@ public:
 	}
 
 	void acabarNivel() {
+		niveles[nivelActual]->mostrarCinematica(true);
+		if (nivelActual < niveles.size()) nivelActual++;
+
+		prota->setVida(100);
+
 		if (nivelActual == 1) {
+			audio.detener(musicaNvl1);
+			audio.reproducir(musicaNvl2);
+
+			prota->setAltoJugablePermitido(ALTO_JUGABLE + ALTO_DIAL - 1);
+		}
+		else if (nivelActual == 2) {
+			audio.detener(musicaNvl2);
+			audio.reproducir(musicaNvl3);
+
 			prota->setX(20);
 			prota->setY(12);
 
@@ -104,17 +144,7 @@ public:
 			for (Enemigo* enemigo : niveles[nivelActual]->getMapaActual()->getVecEnemigo()) {
 				delete enemigo;
 			}
-		}
 
-		niveles[nivelActual]->mostrarCinematica(true);
-		if (nivelActual < niveles.size()) nivelActual++;
-
-		prota->setVida(100);
-
-		if (nivelActual == 1) {
-			prota->setAltoJugablePermitido(ALTO_JUGABLE + ALTO_DIAL - 1);
-		}
-		else if (nivelActual == 2) {
 			prota->setAltoJugablePermitido(ALTO_JUGABLE - 1);
 			prota->setSprite({
 				{" ", " ", " ", "O", " ", " ", " ", "o", " ", " ", "O", " ", " ", "_", " ", " ", " ", " ", " "},
