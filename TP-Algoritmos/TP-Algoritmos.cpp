@@ -7,15 +7,15 @@
 #include <clocale>
 #include <direct.h>
 using std::string;
+ 
+extern HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 
-HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+extern int ANCHO_JUGABLE = 110;
+extern int ANCHO_ESTAD = 30;
+extern int ALTO_JUGABLE = 25;
+extern int ALTO_DIAL = 10;
 
-constexpr int ANCHO_JUGABLE = 110;
-constexpr int ANCHO_ESTAD = 30;
-constexpr int ALTO_JUGABLE = 25;
-constexpr int ALTO_DIAL = 10;
-
-constexpr int TIEMPO_SLEEP = 75;
+extern int TIEMPO_SLEEP = 75;
 
 #define MINIAUDIO_IMPLEMENTATION
 #include "miniaudio.h"

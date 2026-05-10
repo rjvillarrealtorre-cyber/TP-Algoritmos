@@ -9,12 +9,12 @@ using std::string;
 
 extern HANDLE hConsole;
 
-extern const int ANCHO_JUGABLE;
-extern const int ANCHO_ESTAD;
-extern const int ALTO_JUGABLE;
-extern const int ALTO_DIAL;
-
-extern const int TIEMPO_SLEEP;
+extern int ANCHO_JUGABLE;
+extern int ANCHO_ESTAD;
+extern int ALTO_JUGABLE;
+extern int ALTO_DIAL;
+	   
+extern int TIEMPO_SLEEP;
 
 inline int leerColor(int color) {
 	switch (color) {

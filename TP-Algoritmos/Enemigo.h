@@ -189,6 +189,7 @@ private:
     std::vector<ProyectilEnemigo*> proyectiles;
     int disparosHechos;
     int contFramesDisparo;
+    int contFramesNivel;
 
     int xI, yI;
 public:
@@ -209,6 +210,7 @@ public:
 
         disparosHechos = 0;
         contFramesDisparo = 0;
+        contFramesNivel = 0;
 
         xI = rand() % (50 - 15 + 1) + 15;
         yI = rand() % (5 - 0 + 1) + 1;
@@ -233,15 +235,27 @@ public:
     }
 
     void disparar() {
-        float randomNum = 0.5 + (static_cast<float>(std::rand()) / RAND_MAX) * 0.5;
+        float min = 0.5;
+        float max = 1.5;
+
+        float randomNum = min + (static_cast<double>(std::rand()) / RAND_MAX) * (max - min);
+
         proyectiles.push_back(new ProyectilEnemigo(true, x + ancho + 1, y + alto / 2, '*', randomNum, 10));
     }
 
     void manejarTiempoDisparos(Protagonista& prot) {
         contFramesDisparo++;
+        contFramesNivel++;
 
         float segTranscurridos = (contFramesDisparo * TIEMPO_SLEEP) / 1000.0f;
-        if (segTranscurridos >= 5) {
+        float segTotalesTranscurridos = (contFramesNivel * TIEMPO_SLEEP) / 1000.0f;
+
+        int intervaloAparicion = 5;
+        if (segTotalesTranscurridos >= 10 && segTotalesTranscurridos < 30) intervaloAparicion = 4;
+        else if (segTotalesTranscurridos >= 30 && segTotalesTranscurridos < 40) intervaloAparicion = 3;
+        else if (segTotalesTranscurridos >= 50 && segTotalesTranscurridos < 60) intervaloAparicion = 2;
+
+        if (segTranscurridos >= intervaloAparicion) {
             disparar();
             disparosHechos++;
             contFramesDisparo = 0;

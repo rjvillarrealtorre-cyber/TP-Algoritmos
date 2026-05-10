@@ -28,10 +28,12 @@ private:
 	std::vector<Obstaculo*> obstaculos;
 	int segundosEntreAparicion;
 	int countFramesAparicion;
+	int contFramesTotal;
 public:
 	ManejoObstaculos() {
 		segundosEntreAparicion = 5;
 		countFramesAparicion = 0;
+		contFramesTotal = 0;
 	}
 
 	~ManejoObstaculos() {
@@ -39,16 +41,32 @@ public:
 	}
 
 	void agregarObstaculo() {
-		int yA = rand() % (ALTO_JUGABLE - 2 - 2) + 2;;
-		obstaculos.push_back(new Obstaculo(ANCHO_JUGABLE - 9, yA));
+		int veces = 1;
+
+		if (veces >= 10 && contFramesTotal < 20) veces = 2;
+		else if (veces >= 20 && contFramesTotal < 30) veces = 3;
+		else if (veces >= 40 && contFramesTotal < 60) veces = 4;
+
+		for (int i = 0; i < veces; i++) {
+			int yA = rand() % (ALTO_JUGABLE - 2 - 3) + 3;;
+			obstaculos.push_back(new Obstaculo(ANCHO_JUGABLE - 9, yA));
+		}
+
 	}
 
 	void manejarAgregarObstaculo() {
 		countFramesAparicion++;
+		contFramesTotal++;
 
+		float segTotalesTranscurridos = (contFramesTotal * TIEMPO_SLEEP) / 1000.0f;
 		float segTranscurridos = (countFramesAparicion * TIEMPO_SLEEP) / 1000.0f;
 
-		if (segTranscurridos >= 5) {
+		int intervaloAparicion = 5;
+		if (segTotalesTranscurridos >= 10 && segTotalesTranscurridos < 30) intervaloAparicion = 4;
+		else if (segTotalesTranscurridos >= 30 && segTotalesTranscurridos < 40) intervaloAparicion = 3;
+		else if (segTotalesTranscurridos >= 50 && segTotalesTranscurridos < 60) intervaloAparicion = 2;
+
+		if (segTranscurridos >= intervaloAparicion) {
 			agregarObstaculo();
 			countFramesAparicion = 0;
 		}
@@ -60,7 +78,11 @@ public:
 	}
 
 	void moverObstaculo(int i) {
-		obstaculos[i]->setX(obstaculos[i]->getX() - 1);
+		float min = 0.5;
+		float max = 2.0;
+
+		float random_val = min + (static_cast<float>(std::rand()) / RAND_MAX) * (max - min);
+		obstaculos[i]->setX(obstaculos[i]->getX() - random_val);
 	}
 
 	void manejarColisiones(int i, Protagonista& prot) {
