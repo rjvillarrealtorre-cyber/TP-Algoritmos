@@ -301,6 +301,18 @@ public:
 		contadorFrames++;
 		niveles[nivelActual]->getMapaActual()->anadirContadorFrames();
 
+		//Texto nivel 3:
+
+		if (nivelActual == 2) {
+			std::vector<string> lineas = {
+				u8"MATEO: Tengo el dossier. Lo cuidaré. Pero... Necesitamos resistir.",
+				u8"WILMER: ¡Vamos! ¡Solo son unas cuántas horas río abajo! ¡Resistid!",
+				u8"JEREMÍAS: Iré atrás. Veré si... si el motor funciona.",
+			};
+			short centrar = (ANCHO_JUGABLE - lineas[0].size()) / 2;
+			SetConsoleCursorPosition(hConsole, { short(centrar + 1), short(ALTO_JUGABLE + 1) });
+		}
+
 		Sleep(TIEMPO_SLEEP);
 	}
 

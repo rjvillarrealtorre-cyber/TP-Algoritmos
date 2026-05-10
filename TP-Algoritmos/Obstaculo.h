@@ -41,11 +41,12 @@ public:
 	}
 
 	void agregarObstaculo() {
-		int veces = 1;
+		int veces = 2;
 
-		if (veces >= 10 && contFramesTotal < 20) veces = 2;
-		else if (veces >= 20 && contFramesTotal < 30) veces = 3;
-		else if (veces >= 40 && contFramesTotal < 60) veces = 4;
+		if (veces >= 10 && contFramesTotal < 20) veces = 3;
+		else if (veces >= 20 && contFramesTotal < 30) veces = 4;
+		else if (veces >= 40 && contFramesTotal < 50) veces = 5;
+		else if (veces >= 50 && contFramesTotal < 60) veces = 6;
 
 		for (int i = 0; i < veces; i++) {
 			int yA = rand() % (ALTO_JUGABLE - 2 - 3) + 3;;
@@ -64,7 +65,8 @@ public:
 		int intervaloAparicion = 5;
 		if (segTotalesTranscurridos >= 10 && segTotalesTranscurridos < 30) intervaloAparicion = 4;
 		else if (segTotalesTranscurridos >= 30 && segTotalesTranscurridos < 40) intervaloAparicion = 3;
-		else if (segTotalesTranscurridos >= 50 && segTotalesTranscurridos < 60) intervaloAparicion = 2;
+		else if (segTotalesTranscurridos >= 40 && segTotalesTranscurridos < 50) intervaloAparicion = 2;
+		else if (segTotalesTranscurridos >= 50 && segTotalesTranscurridos < 60) intervaloAparicion = 1;
 
 		if (segTranscurridos >= intervaloAparicion) {
 			agregarObstaculo();
