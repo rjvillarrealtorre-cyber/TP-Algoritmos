@@ -139,6 +139,7 @@
     <ClInclude Include="Cinematica.h" />
     <ClInclude Include="Enemigo.h" />
     <ClInclude Include="Interfaz.h" />
+    <ClInclude Include="miniaudio.h" />
     <ClInclude Include="NPCInteractuable.h" />
     <ClInclude Include="Juego.h" />
     <ClInclude Include="Mapa.h" />

@@ -1,5 +1,7 @@
 #include <iostream>
 #include <Windows.h>
+#pragma comment(lib, "User32.lib")
+#pragma comment(lib, "Winmm.lib")
 #include <cstdlib>
 #include <vector>
 #include <clocale>
@@ -8,12 +10,12 @@ using std::string;
 
 HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 
-extern const int ANCHO_JUGABLE = 110;
-extern const int ANCHO_ESTAD = 30;
-extern const int ALTO_JUGABLE = 25;
-extern const int ALTO_DIAL = 10;
+constexpr int ANCHO_JUGABLE = 110;
+constexpr int ANCHO_ESTAD = 30;
+constexpr int ALTO_JUGABLE = 25;
+constexpr int ALTO_DIAL = 10;
 
-extern const int TIEMPO_SLEEP = 75;
+constexpr int TIEMPO_SLEEP = 75;
 
 #define MINIAUDIO_IMPLEMENTATION
 #include "miniaudio.h"
