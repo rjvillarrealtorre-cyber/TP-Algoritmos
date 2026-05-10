@@ -310,7 +310,11 @@ public:
 				u8"JEREMÍAS: Iré atrás. Veré si... si el motor funciona.",
 			};
 			short centrar = (ANCHO_JUGABLE - lineas[0].size()) / 2;
-			SetConsoleCursorPosition(hConsole, { short(centrar + 1), short(ALTO_JUGABLE + 1) });
+
+			for (auto l : lineas) {
+				SetConsoleCursorPosition(hConsole, { short(centrar + 1), short(ALTO_JUGABLE + 1) });
+				std::cout << l;
+			}
 		}
 
 		Sleep(TIEMPO_SLEEP);
